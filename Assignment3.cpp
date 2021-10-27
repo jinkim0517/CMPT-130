@@ -190,7 +190,11 @@ string hundredsToString(int number){
         string hundredsValue = onesToString(hundreds);
 
         // Adds " hundred " to ones string
-        result = hundredsValue + " hundred ";
+        result = hundredsValue + " hundred";
+
+        if (tens != 0 || ones != 0){
+            result += " ";
+        }
     }
 
     // Adds "and " only when last two digits are not zero
@@ -208,7 +212,7 @@ string thousandsToString(int number){
 
     // Code only executes when needed
     if (number > 999){
-        if (number < 10000 || number > 19000){
+        if (number < 10000 || number >= 20000){
             // Calls onesToString to determine the first half of
             // the string concatenation
             string thousandsValue = onesToString(thousands);
@@ -377,6 +381,6 @@ void printIntStrings(int start, int end, int interval){
 int main()
 {
     //printIntStrings(0, 4, 3);
-    cout << intToString(17017);
+    cout << intToString(19219);
     return 0;
 }
