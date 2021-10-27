@@ -32,10 +32,8 @@ string onesToString(int number){
         // Only prints zero when number is less than 1 (0)
         // Hundreds != prevents "zero" from printing when called
         // by thousandsToString
-        if (number < 1 && hundreds != 0){
-            if (ones == 0 && tens != 1){
-                result = "zero";
-            }    
+        if (number < 1){
+            result = "zero";
         }
 
         // Returns strings from 1-9
@@ -209,6 +207,8 @@ string thousandsToString(int number){
     string result = "";
     int thousands = digitValue(number, 4);
     int hundreds = digitValue(number, 3);
+    int tens = digitValue (number, 2);
+    int ones = digitValue (number, 1);
 
     // Code only executes when needed
     if (number > 999){
@@ -223,7 +223,10 @@ string thousandsToString(int number){
                 result = thousandsValue + " thousand, ";
             }
             else{
-                result = thousandsValue + " thousand ";
+                result = thousandsValue + " thousand";
+                if (tens != 0 || ones != 0){
+                    result += " ";
+                }
             }
         }
     }
@@ -238,6 +241,7 @@ string teenThousandsToString(int number){
     int thousands = digitValue(number, 4);
     int hundreds = digitValue(number, 3);
     int tens = digitValue(number, 2);
+    int ones = digitValue(number, 1);
     
     // Code only executes when needed
     if (number >= 10000 && number < 20000){ 
@@ -290,7 +294,9 @@ string teenThousandsToString(int number){
             result += ", ";
         }
         else{
+            if (tens != 0 || ones != 0){
             result += " ";
+            }
         }
     }
     return result;
@@ -381,6 +387,6 @@ void printIntStrings(int start, int end, int interval){
 int main()
 {
     //printIntStrings(0, 4, 3);
-    cout << intToString(19219);
+    cout << intToString(12340);
     return 0;
 }
