@@ -88,43 +88,43 @@ string teensToString(int number){
     // Tens == 1 parameter assures that value is
     // a teen number
     if (tens == 1 && ones == 0 ){
-        result = "ten ";
+        result = "ten";
     }    
 
     else if (tens == 1 && ones == 1){
-        result = "eleven ";
+        result = "eleven";
     }
 
     else if (tens == 1 && ones == 2){
-    result = "twelve ";
+    result = "twelve";
     }
 
     else if (tens == 1 && ones == 3){
-    result = "thirteen ";
+    result = "thirteen";
     }
 
     else if (tens == 1 && ones == 4){
-        result = "fourteen ";
+        result = "fourteen";
     }
 
     else if (tens == 1 && ones == 5){
-        result = "fifteen ";
+        result = "fifteen";
     }
 
     else if (tens == 1 && ones == 6){
-        result = "sixteen ";
+        result = "sixteen";
     }
 
     else if (tens == 1 && ones == 7){
-        result = "seventeen ";
+        result = "seventeen";
     }
 
     else if (tens == 1 && ones == 8){
-        result = "eighteen ";
+        result = "eighteen";
     }
 
     else if (tens == 1 && ones == 9){
-        result = "nineteen ";
+        result = "nineteen";
     }
     return result;
 }
@@ -377,6 +377,6 @@ void printIntStrings(int start, int end, int interval){
 int main()
 {
     //printIntStrings(0, 4, 3);
-    cout << intToString(17);
+    cout << intToString(17017);
     return 0;
 }
