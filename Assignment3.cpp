@@ -146,7 +146,7 @@ string tensToString(int number){
     }
 
     else if (tens == 4){
-        result = "fourty";
+        result = "forty";
     }
 
     else if (tens == 5){
@@ -309,7 +309,7 @@ string tenThousandsToString (int number){
         }
 
         else if (tenThousands == 4){
-            result = "fourty";
+            result = "forty";
         }
 
         else if (tenThousands == 5){
