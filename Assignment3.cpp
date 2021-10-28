@@ -187,9 +187,10 @@ string hundredsToString(int number){
         // first half of concatenation
         string hundredsValue = onesToString(hundreds);
 
-        // Adds " hundred " to ones string
+        // Adds " hundred" to ones string
         result = hundredsValue + " hundred";
 
+        // Adds a space when there are strings added afterwards
         if (tens != 0 || ones != 0){
             result += " ";
         }
@@ -225,6 +226,7 @@ string thousandsToString(int number){
             else{
                 result = thousandsValue + " thousand";
                 if (tens != 0 || ones != 0){
+                    // Add space if preceding numbers are non-zero values
                     result += " ";
                 }
             }
@@ -294,6 +296,7 @@ string teenThousandsToString(int number){
             result += ", ";
         }
         else{
+            // Adds a space if preceding numbers are non-zero values
             if (tens != 0 || ones != 0){
             result += " ";
             }
