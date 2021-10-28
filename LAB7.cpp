@@ -1,10 +1,4 @@
-// lab7 - Global Variables
-// Brian Fraser, (slightly) modified by John Edgar
-// October 2020 (and 2021)
- 
-// Program using global variables.
-// TASK: Convert all global variables into local variables.
-// You may change the parameters to functions as needed.
+//Jin Kim, LAB 7
 #include <iostream>
 #include <iomanip>
 #include <string>
@@ -14,28 +8,26 @@ using namespace std;
 const double MAX_HEIGHT = 3.0;
 const double MIN_HEIGHT = 1.0;
  
-// GLOBAL VARIABLES TO REMOVE
-char choice = ' ';
-string customerName;
-double customerHeight = 0;
- 
 // Function Prototypes
-void readHeight();
-void printCustomerInfo();
+double readHeight(double customerHeight);
+void printCustomerInfo(string customerName, double customerHeight);
 bool askToDoAnother();
  
 // Asks for a customer's information, and display it to the screen.
 int main() {
     bool keepReading = 1;
+    double customerHeight = 0;
+    char choice = ' ';
+    string customerName;
 	while (keepReading == 1) {
 		// Read in the customer info:
 		// ... Read the height
-		readHeight();
+        customerHeight = readHeight(customerHeight);
 		// ... Read Name
 		cout << "Enter customer name: ";
 		getline(cin, customerName);
 		// Display a summary:
-		printCustomerInfo();
+		printCustomerInfo(customerName, customerHeight);
 		// Do another?
 		keepReading = askToDoAnother();
 	}
@@ -45,22 +37,28 @@ int main() {
 // Function Definitions - MAY NEED TO BE CHANGED
  
 // Reads in the user's height
-void readHeight() {
+double readHeight(double customerHeight) {
 	cout << "Enter customer height (metres): ";
 	cin >> customerHeight;
 	while (customerHeight > MAX_HEIGHT || customerHeight < MIN_HEIGHT) {
 		cout << fixed << setprecision(1);
 		cout << "ERROR: Height must be between " << MIN_HEIGHT
 			<< " and " << MAX_HEIGHT << " metres." << endl;
+
+            if (cin.fail()){
+                cin.clear();
+                cin.ignore(10000, '\n');
+            }
 		cout << "Enter customer height (metres): ";
 		cin >> customerHeight;
 	}
 	// Empty input stream (removes endline)
 	cin.ignore(10000, '\n');
+    return customerHeight;
 }
  
 // Prints the customer's information to the screen.
-void printCustomerInfo() {
+void printCustomerInfo(string customerName, double customerHeight) {
 	cout << fixed << setprecision(1);
 	cout << "\n";
 	cout << "Customer summary: " << endl;
@@ -72,6 +70,7 @@ void printCustomerInfo() {
 // Asks the user if they want to enter more data.
 bool askToDoAnother() {
 	// Read in the user's selection
+    char choice = ' ';
 	cout << "Enter another customer? (Y/N) ";
 	cin >> choice;
 	return (choice == 'Y' || choice == 'y');
