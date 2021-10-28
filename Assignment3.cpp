@@ -32,7 +32,7 @@ string onesToString(int number){
         // Only prints zero when number is less than 1 (0)
         // Hundreds != prevents "zero" from printing when called
         // by thousandsToString
-        if (number < 1){
+        if (number == 0){
             result = "zero";
         }
 
@@ -217,6 +217,9 @@ string thousandsToString(int number){
             // Calls onesToString to determine the first half of
             // the string concatenation
             string thousandsValue = onesToString(thousands);
+            if (thousandsValue == "zero"){
+                thousandsValue = "";
+            }
 
             // Determines whether or not a comma is necessary to be
             // returned based on the thousands and hundreds digits
@@ -387,9 +390,11 @@ void printIntStrings(int start, int end, int interval){
     }
 }
 
+/*
 int main()
 {
     //printIntStrings(0, 4, 3);
-    cout << intToString(12340);
+    cout << intToString(900);
     return 0;
 }
+/*
