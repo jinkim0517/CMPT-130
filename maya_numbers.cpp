@@ -21,6 +21,8 @@ const int NUMBER_OF_CHOICES = 3;
 
 int main(){
 	mayanNumeralGame();
+
+	cout << "The Mayan representation of 43549 is: " << endl;
 	printMayanNumber(43549);
 	return 0;
 }
@@ -38,42 +40,44 @@ void mayanNumeralGame(){
 	if(cin.fail()){
 		cin.clear();
 		cin.ignore(10000, '\n');
-		cout << "error";
+		cout << "error" << endl;
 	}
+	else{
+		// When the user wants to continue
+		while(inputValue > 10){
+			int low = inputValue / 2;
+			int high = inputValue * 1.5;
+			int correctAns = rand() % inputValue + 4;
+			int incorrectAns1 = rand() % (high - low + 1) + low;
+			int incorrectAns2 = rand() % (high - low + 1) + low;
+			
+			// Prints the choices that the user can choose from
+			char ans = printChoices(inputValue, correctAns, incorrectAns1, incorrectAns2);
 
-	// When the user wants to continue
-	while(inputValue > 10){
-		int low = inputValue / 2;
-		int high = inputValue * 1.5;
-		int correctAns = rand() % inputValue + 4;
-		int incorrectAns1 = rand() % (high - low + 1) + low;
-		int incorrectAns2 = rand() % (high - low + 1) + low;
-		
-		// Prints the choices that the user can choose from
-		char ans = printChoices(inputValue, correctAns, incorrectAns1, incorrectAns2);
+			char userAns = ' ';
+			cout << "Enter your choice: ";
+			cin >> userAns;
 
-		char userAns = ' ';
-		cin >> userAns;
+			// Checks if the user answer is correct
+			if(userAns == ans){
+				cout << "You are correct! Great job!!!" << endl;
+			}
+			else{
+				// Prints the correct mayan representation for the number
+				cout << "Oops! Wrong answer :(" << endl
+				<< "The correct Mayan representation of " << correctAns << " is:" << endl;
+				printMayanNumber(correctAns);
+			}
 
-		// Checks if the user answer is correct
-		if(userAns == ans){
-			cout << "You are correct! Great job!!!" << endl;
-		}
-		else{
-			// Prints the correct mayan representation for the number
-			cout << "Oops! Wrong answer :(" << endl
-			<< "The correct Mayan representation of " << correctAns << " is:" << endl;
-			printMayanNumber(correctAns);
-		}
+			// Asks if the user wants to continue
+			cout << "Enter a number greater than 10, or enter a value less than 10 to exit: ";
+			cin >> inputValue;
 
-		// Asks if the user wants to continue
-		cout << "Enter a number greater than 10, or enter a value less than 10 to exit: ";
-		cin >> inputValue;
-
-		if(cin.fail()){
-			cin.clear();
-			cin.ignore(10000, '\n');
-			cout << "error";
+			if(cin.fail()){
+				cin.clear();
+				cin.ignore(10000, '\n');
+				cout << "error" << endl;
+			}
 		}
 	}
 }
@@ -178,20 +182,16 @@ int largestPower(int number){
 
 // Prints all the symbols of a given integer
 void printSymbols(int number){
-	int count = 0;
 	string symbols = "";
-	while(count < number){
-		count++;
-	}
 
 	// Prints shell
-	if(count == 0){
+	if(number == 0){
 		symbols = "00";
 		symbols += '\n';
 	}
 
-	int numberOfFives = count / 5;
-	int remainder = count % 5;
+	int numberOfFives = number / 5;
+	int remainder = number % 5;
 
 	// Prints dots
 	for(int numOfDots = 0; numOfDots < remainder; numOfDots++){
