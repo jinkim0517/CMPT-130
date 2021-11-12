@@ -20,10 +20,10 @@ const char* MAYAN_FIVE = "\u2580";
 const int NUMBER_OF_CHOICES = 3;
 
 int main(){
-	mayanNumeralGame();
+	cout << "The Mayan representation of 5212 is: " << endl;
+	printMayanNumber(53);
 
-	cout << "The Mayan representation of 43549 is: " << endl;
-	printMayanNumber(43549);
+	//mayanNumeralGame();
 	return 0;
 }
 
@@ -33,7 +33,10 @@ void mayanNumeralGame(){
 	srand(time(0));
 
 	// Asks for initial input from user
-	cout << "Enter a number greater than 10, or enter a value less than 10 to exit: ";
+	cout << "Enter a number greater than 10, or enter a value less than 10 to exit. "
+	<< "The game wll choose a number less than or equal to what you enter, and you will have to match the decimal "
+	<< "value with its Mayan equivalent!" << endl;
+	cout << "Your number: ";
 	cin >> inputValue;
 
 	// Error handling
@@ -44,7 +47,8 @@ void mayanNumeralGame(){
 	}
 	else{
 		// When the user wants to continue
-		while(inputValue > 10){
+		while(inputValue >= 10){
+			// Sets upper and lower bounds
 			int low = inputValue / 2;
 			int high = inputValue * 1.5;
 			int correctAns = rand() % inputValue + 4;
@@ -73,6 +77,7 @@ void mayanNumeralGame(){
 			cout << "Enter a number greater than 10, or enter a value less than 10 to exit: ";
 			cin >> inputValue;
 
+			// Error handling
 			if(cin.fail()){
 				cin.clear();
 				cin.ignore(10000, '\n');
@@ -84,12 +89,13 @@ void mayanNumeralGame(){
 
 // Prints choices
 char printChoices(int inputValue, int correctAns, int incorrectAns1, int incorrectAns2){
+	// Rolls first number
 	int firstRoll = rand() % NUMBER_OF_CHOICES;
 	char ans = ' ';
 
 	cout << "Which of these represents " << correctAns << "?" << endl;
 
-	cout << "a." << endl << endl;
+	cout << endl << "a." << endl;
 
 	if(firstRoll == 0){
 		printMayanNumber(correctAns);
@@ -104,8 +110,9 @@ char printChoices(int inputValue, int correctAns, int incorrectAns1, int incorre
 	}
 	cout << endl;
 
-	cout << "b." << endl << endl;
+	cout << endl << "b." << endl;
 
+	// Rolls second number
 	int secondRoll = rand() % NUMBER_OF_CHOICES;
 
 	// Makes sure that the same choice is not printed twice
@@ -125,8 +132,9 @@ char printChoices(int inputValue, int correctAns, int incorrectAns1, int incorre
 		printMayanNumber(incorrectAns2);
 	}
 
-	cout << "c." << endl << endl;
-	
+	cout << endl << "c." << endl;
+
+	// Rolls third number
 	int thirdRoll = rand() % NUMBER_OF_CHOICES;
 
 	// Makes sure that the same choice is not printed two or three times
@@ -173,7 +181,7 @@ int largestPower(int number){
 	int start = 1;
 	int power = 0;
 
-	while (number / start != 0){
+	while (number / start > 0){
 		start *= 20;
 		power++;
 	}
