@@ -23,7 +23,7 @@ int main(){
 	cout << "The Mayan representation of 5212 is: " << endl;
 	printMayanNumber(53);
 
-	//mayanNumeralGame();
+	mayanNumeralGame();
 	return 0;
 }
 
