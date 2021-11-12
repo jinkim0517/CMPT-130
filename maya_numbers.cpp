@@ -21,7 +21,7 @@ const int NUMBER_OF_CHOICES = 3;
 
 int main(){
 	cout << "The Mayan representation of 5212 is: " << endl;
-	printMayanNumber(53);
+	printMayanNumber(5212);
 
 	mayanNumeralGame();
 	return 0;
@@ -108,7 +108,6 @@ char printChoices(int inputValue, int correctAns, int incorrectAns1, int incorre
 	else{
 		printMayanNumber(incorrectAns2);
 	}
-	cout << endl;
 
 	cout << endl << "b." << endl;
 
@@ -168,11 +167,16 @@ void printMayanNumber(int number){
 		printSymbols(firstClassValue);
 		// Adds dividing line if needed
 		if(power != 0){
-			cout << "------" << endl;
+			cout << "-----" << endl;
 		}
 		// Changes the number to the next base-twenty class
 		number -= firstClassValue * baseTwentyValue;
 		power--;
+	}
+
+	// Accounts for 20^n not being able to produce zero
+	if(number == 0){
+		cout << "00" << endl;
 	}
 }
 
