@@ -40,51 +40,55 @@ void mayanNumeralGame(){
 	cin >> inputValue;
 
 	// Error handling
-	if(cin.fail()){
+	while(cin.fail()){
 		cin.clear();
 		cin.ignore(10000, '\n');
 		cout << "error" << endl;
+		cout << "Enter a number greater than 10, or enter a value less than 10 to exit: ";
+		cin >> inputValue;
 	}
-	else{
-		// When the user wants to continue
-		while(inputValue >= 10){
-			// Sets upper and lower bounds
-			int low = inputValue / 2;
-			int high = inputValue * 1.5;
-			int correctAns = rand() % inputValue + 4;
-			int incorrectAns1 = rand() % (high - low + 1) + low;
-			int incorrectAns2 = rand() % (high - low + 1) + low;
+	// When the user wants to continue
+	while(inputValue >= 10){
+		// Sets upper and lower bounds
+		int low = inputValue / 2;
+		int high = inputValue * 1.5;
+		int correctAns = rand() % inputValue + 4;
+		int incorrectAns1 = rand() % (high - low + 1) + low;
+		int incorrectAns2 = rand() % (high - low + 1) + low;
 			
-			// Prints the choices that the user can choose from
-			char ans = printChoices(inputValue, correctAns, incorrectAns1, incorrectAns2);
+		// Prints the choices that the user can choose from
+		char ans = printChoices(inputValue, correctAns, incorrectAns1, incorrectAns2);
 
-			char userAns = ' ';
-			cout << "Enter your choice: ";
-			cin >> userAns;
+		char userAns = ' ';
+		cout << "Enter your choice: ";
+		cin >> userAns;
+		cout << endl;
 
-			// Checks if the user answer is correct
-			if(userAns == ans){
-				cout << "You are correct! Great job!!!" << endl;
-			}
-			else{
-				// Prints the correct mayan representation for the number
-				cout << "Oops! Wrong answer :(" << endl
-				<< "The correct Mayan representation of " << correctAns << " is:" << endl;
-				printMayanNumber(correctAns);
-			}
+		// Checks if the user answer is correct
+		if(userAns == ans){
+			cout << "You are correct! Great job!!!" << endl;
+		}
+		else{
+			// Prints the correct mayan representation for the number
+			cout << "Oops! Wrong answer :(" << endl
+			<< "The correct Mayan representation of " << correctAns << " is:" << endl;
+			printMayanNumber(correctAns);
+		}
 
-			// Asks if the user wants to continue
+		// Asks if the user wants to continue
+		cout << "Enter a number greater than 10, or enter a value less than 10 to exit: ";
+		cin >> inputValue;
+
+		// Error handling
+		if(cin.fail()){
+			cin.clear();
+			cin.ignore(10000, '\n');
+			cout << "error" << endl;
 			cout << "Enter a number greater than 10, or enter a value less than 10 to exit: ";
 			cin >> inputValue;
-
-			// Error handling
-			if(cin.fail()){
-				cin.clear();
-				cin.ignore(10000, '\n');
-				cout << "error" << endl;
-			}
 		}
 	}
+	cout << "Goodbye!";
 }
 
 // Prints choices
@@ -95,7 +99,7 @@ char printChoices(int inputValue, int correctAns, int incorrectAns1, int incorre
 
 	cout << "Which of these represents " << correctAns << "?" << endl;
 
-	cout << endl << "a." << endl;
+	cout << "a." << endl;
 
 	if(firstRoll == 0){
 		printMayanNumber(correctAns);
@@ -157,26 +161,27 @@ char printChoices(int inputValue, int correctAns, int incorrectAns1, int incorre
 
 // Prints the Mayan representation of a number
 void printMayanNumber(int number){
-	// Finds the largest power of twenty
-	int power = largestPower(number);
-	while(power >= 0){
-		// Finds the literal value of largestPower
-		int baseTwentyValue = pow(20, power);
-		// Finds the first base-twenty class and prints all the symbols
-		int firstClassValue = number / baseTwentyValue;
-		printSymbols(firstClassValue);
-		// Adds dividing line if needed
-		if(power != 0){
-			cout << "-----" << endl;
-		}
-		// Changes the number to the next base-twenty class
-		number -= firstClassValue * baseTwentyValue;
-		power--;
-	}
-
 	// Accounts for 20^n not being able to produce zero
 	if(number == 0){
 		cout << "00" << endl;
+	}
+	else{
+		// Finds the largest power of twenty
+		int power = largestPower(number);
+		while(power >= 0){
+			// Finds the literal value of largestPower
+			int baseTwentyValue = pow(20, power);
+			// Finds the first base-twenty class and prints all the symbols
+			int firstClassValue = number / baseTwentyValue;
+			printSymbols(firstClassValue);
+			// Adds dividing line if needed
+			if(power != 0){
+				cout << "-----" << endl;
+			}
+			// Changes the number to the next base-twenty class
+			number -= firstClassValue * baseTwentyValue;
+			power--;
+		}
 	}
 }
 
