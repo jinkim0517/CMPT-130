@@ -171,13 +171,16 @@ void printMayanNumber(int number){
 		while(power >= 0){
 			// Finds the literal value of largestPower
 			int baseTwentyValue = pow(20, power);
+
 			// Finds the first base-twenty class and prints all the symbols
 			int firstClassValue = number / baseTwentyValue;
 			printSymbols(firstClassValue);
+
 			// Adds dividing line if needed
 			if(power != 0){
 				cout << "-----" << endl;
 			}
+			
 			// Changes the number to the next base-twenty class
 			number -= firstClassValue * baseTwentyValue;
 			power--;
