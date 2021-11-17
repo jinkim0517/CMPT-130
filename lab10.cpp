@@ -5,18 +5,16 @@ using namespace std;
 
 const double PI = 3.14159;
 
-// Circle struct goes here
-
-// Function prototypes
-
-bool intersect(const Circle & c1, const Circle & c2);
-double area(Circle c);
-
 struct Circle{
     int xCoordinate;
     int yCoordinate;
     double radius;
 };
+
+// Function prototypes
+
+bool intersect(const Circle & c1, const Circle & c2);
+double area(const Circle & c);
 
 int main()
 {
@@ -47,12 +45,18 @@ int main()
 
        return 0;
 }
+
 bool intersect(const Circle & c1, const Circle & c2){
-    double distance = sqrt(pow(c1.xCoordinate - c2.xCoordinate, 2) -  pow(c1.yCoordinate - c2.yCoordinate, 2));
+    double distance = sqrt(pow((c1.xCoordinate - c2.xCoordinate), 2) -  pow((c1.yCoordinate - c2.yCoordinate), 2));
     if(distance > (c1.radius + c2.radius)){
-        return true;
+       return true;
     }
     else{
-        return false;
+       return false;
     }
+}
+
+double area(const Circle & c){
+       double area = 2 * PI * c.radius;
+       return area;
 }
