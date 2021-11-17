@@ -47,8 +47,8 @@ int main()
 }
 
 bool intersect(const Circle & c1, const Circle & c2){
-    double distance = sqrt(pow((c1.xCoordinate - c2.xCoordinate), 2) -  pow((c1.yCoordinate - c2.yCoordinate), 2));
-    if(distance > (c1.radius + c2.radius)){
+    double distance = sqrt(pow((c1.xCoordinate - c2.xCoordinate), 2) +  pow((c1.yCoordinate - c2.yCoordinate), 2));
+    if(distance <= (c1.radius + c2.radius)){
        return true;
     }
     else{
@@ -57,6 +57,6 @@ bool intersect(const Circle & c1, const Circle & c2){
 }
 
 double area(const Circle & c){
-       double area = 2 * PI * c.radius;
+       double area = PI * pow(c.radius, 2);
        return area;
 }
