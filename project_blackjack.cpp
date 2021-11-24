@@ -37,17 +37,18 @@ struct CardArray {
 void getNewDeck(CardArray & deck);
 string swap(string card);
 void deckShuffle(string *deck);
+void printDeck(const CardArray & deck);
 
 int main() {
 	CardArray deck1;
 	getNewDeck(deck1);
-	cout << deck1.cardArray[2].rank;
+  	printDeck(deck1);
 } 
 
 void getNewDeck(CardArray & deck){
 	deck.maxCards = DECK_SIZE;
 	deck.usedCards = DECK_SIZE;
-	Card* newDeck = new Card[DECK_SIZE];
+	deck.cardArray = new Card[DECK_SIZE];
 
 	string suit[] = {"Spades", "Hearts", "Diamonds", "Clubs"};
 	int value[] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11};
@@ -60,94 +61,94 @@ void getNewDeck(CardArray & deck){
 
 	for(int i = 0; i < 52; i++){
 		if(i < 13){
-			newDeck[i].suit = suit[0];
-			newDeck[i].rank = rank[firstSet];
+			deck.cardArray[i].suit = suit[0];
+			deck.cardArray[i].rank = rank[firstSet];
 			firstSet++;
-			if(newDeck[i].rank == 1){
-				newDeck[i].description = "AS";
+			if(deck.cardArray[i].rank == 1){
+				deck.cardArray[i].description = "AS";
 			}
-			else if (newDeck[i].rank > 1 && newDeck[i].rank < 11){
-				newDeck[i].description = to_string(newDeck[i].rank) + 'S';
+			else if (deck.cardArray[i].rank > 1 && deck.cardArray[i].rank < 11){
+				deck.cardArray[i].description = to_string(deck.cardArray[i].rank) + 'S';
 			}
-			else if (newDeck[i].rank >= 11){
-				if(newDeck[i].rank == 11){
-					newDeck[i].description = "JS";
+			else if (deck.cardArray[i].rank >= 11){
+				if(deck.cardArray[i].rank == 11){
+					deck.cardArray[i].description = "JS";
 				}
-				else if(newDeck[i].rank == 12){
-					newDeck[i].description = "QS";
+				else if(deck.cardArray[i].rank == 12){
+					deck.cardArray[i].description = "QS";
 				}
-				else if(newDeck[i].rank == 13){
-					newDeck[i].description = "KS";
+				else if(deck.cardArray[i].rank == 13){
+					deck.cardArray[i].description = "KS";
 				}
 			}
 		}
 		else if(i >= 13 && i < 26){
-			newDeck[i].suit = suit[1];
-			newDeck[i].rank = rank[secondSet];
+			deck.cardArray[i].suit = suit[1];
+			deck.cardArray[i].rank = rank[secondSet];
 			secondSet++;
 
-			if(newDeck[i].rank == 1){
-				newDeck[i].description = "AH";
+			if(deck.cardArray[i].rank == 1){
+				deck.cardArray[i].description = "AH";
 			}
-			else if (newDeck[i].rank > 1 && newDeck[i].rank < 11){
-				newDeck[i].description = to_string(newDeck[i].rank) + 'H';
+			else if (deck.cardArray[i].rank > 1 && deck.cardArray[i].rank < 11){
+				deck.cardArray[i].description = to_string(deck.cardArray[i].rank) + 'H';
 			}
-			else if (newDeck[i].rank >= 11){
-				if(newDeck[i].rank == 11){
-					newDeck[i].description = "JH";
+			else if (deck.cardArray[i].rank >= 11){
+				if(deck.cardArray[i].rank == 11){
+					deck.cardArray[i].description = "JH";
 				}
-				else if(newDeck[i].rank == 12){
-					newDeck[i].description = "QH";
+				else if(deck.cardArray[i].rank == 12){
+					deck.cardArray[i].description = "QH";
 				}
-				else if(newDeck[i].rank == 13){
-					newDeck[i].description = "KH";
+				else if(deck.cardArray[i].rank == 13){
+					deck.cardArray[i].description = "KH";
 				}
 			}
 		}
 		else if(i >= 26 && i < 39){
 			int n = 0;
-			newDeck[i].suit = suit[2];
-			newDeck[i].rank = rank[thirdSet];
+			deck.cardArray[i].suit = suit[2];
+			deck.cardArray[i].rank = rank[thirdSet];
 			thirdSet++;
 
-			if(newDeck[i].rank == 1){
-				newDeck[i].description = "AD";
+			if(deck.cardArray[i].rank == 1){
+				deck.cardArray[i].description = "AD";
 			}
-			else if (newDeck[i].rank > 1 && newDeck[i].rank < 11){
-				newDeck[i].description = to_string(newDeck[i].rank) + 'D';
+			else if (deck.cardArray[i].rank > 1 && deck.cardArray[i].rank < 11){
+				deck.cardArray[i].description = to_string(deck.cardArray[i].rank) + 'D';
 			}
-			else if (newDeck[i].rank >= 11){
-				if(newDeck[i].rank == 11){
-					newDeck[i].description = "JD";
+			else if (deck.cardArray[i].rank >= 11){
+				if(deck.cardArray[i].rank == 11){
+					deck.cardArray[i].description = "JD";
 				}
-				else if(newDeck[i].rank == 12){
-					newDeck[i].description = "QD";
+				else if(deck.cardArray[i].rank == 12){
+					deck.cardArray[i].description = "QD";
 				}
-				else if(newDeck[i].rank == 13){
-					newDeck[i].description = "KD";
+				else if(deck.cardArray[i].rank == 13){
+					deck.cardArray[i].description = "KD";
 				}
 			}
 		}
 		else if(i >= 39 && i < 52){
-			newDeck[i].suit = suit[3];
-			newDeck[i].rank = rank[fourthSet];
+			deck.cardArray[i].suit = suit[3];
+			deck.cardArray[i].rank = rank[fourthSet];
 			fourthSet++;
 
-			if(newDeck[i].rank == 1){
-				newDeck[i].description = "AC";
+			if(deck.cardArray[i].rank == 1){
+				deck.cardArray[i].description = "AC";
 			}
-			else if (newDeck[i].rank > 1 && newDeck[i].rank < 11){
-				newDeck[i].description = to_string(newDeck[i].rank) + 'C';
+			else if (deck.cardArray[i].rank > 1 && deck.cardArray[i].rank < 11){
+				deck.cardArray[i].description = to_string(deck.cardArray[i].rank) + 'C';
 			}
-			else if (newDeck[i].rank >= 11){
-				if(newDeck[i].rank == 11){
-					newDeck[i].description = "JC";
+			else if (deck.cardArray[i].rank >= 11){
+				if(deck.cardArray[i].rank == 11){
+					deck.cardArray[i].description = "JC";
 				}
-				else if(newDeck[i].rank == 12){
-					newDeck[i].description = "QC";
+				else if(deck.cardArray[i].rank == 12){
+					deck.cardArray[i].description = "QC";
 				}
-				else if(newDeck[i].rank == 13){
-					newDeck[i].description = "KC";
+				else if(deck.cardArray[i].rank == 13){
+					deck.cardArray[i].description = "KC";
 				}
 			}
 		}
@@ -155,30 +156,26 @@ void getNewDeck(CardArray & deck){
 }
 
 void printDeck(const CardArray & deck){
-		for(int i = 0; i < 52; i++){
-		//cout << CardArray.description << " ";
-		if(i == 12)
-		cout << endl;
-		if(i == 25)
-		cout << endl;
-		if(i == 38)
-		cout << endl;
+	for(int i = 0; i < 52; i++){
+		cout << setw(4) << deck.cardArray[i].description;
+		if(i == 12){
+			cout << endl;
+		}
+		if(i == 25){
+			cout << endl;
+		}
+		if(i == 38){
+			cout << endl;
+		}
 	}
 }
 
-void deckShuffle(string *deck){
+/*void deckShuffle(string *deck){
+	srand(time(0));
 	for(int i = 0; i < 52; i++){
-		srand(time(0));
 		int roll = rand() % 52;
-		deck[i] = deck[roll];
+		string temp = cardArray.description;
+		deck.cardArray[roll].description = deck.cardArray[i].description;
+		deck.cardArray[i].description = temp;
 	}
-		for(int i = 0; i < 52; i++){
-		cout << deck[i] << " ";
-		if(i == 12)
-		cout << endl;
-		if(i == 25)
-		cout << endl;
-		if(i == 38)
-		cout << endl;
-	}
-}
+}*/
