@@ -6,6 +6,7 @@
 
 using namespace std;
 const int DECK_SIZE = 52;
+const int MAX_HAND = 11;
 
 struct Card {
 	string suit;
@@ -24,12 +25,12 @@ struct Card {
 struct CardArray {
 	Card* cards;
 	int maxCards;
-	int usedCards;
+	int currentCards;
 
 	CardArray() {
 		cards = nullptr;
 		maxCards = 0;
-		usedCards = 0;
+		currentCards = 0;
 	}
 };
 
@@ -38,6 +39,8 @@ void getNewDeck(CardArray & deck);
 string swap(string card);
 void shuffleDeck(CardArray & deck);
 void printDeck(const CardArray & deck);
+int blackjack(CardArray & deck);
+void deal(const CardArray & deck, const CardArray & hand);
 
 int main() {
 	CardArray deck1;
@@ -51,9 +54,11 @@ int main() {
 	delete[] deck1.cards;
 } 
 
+
+// PART 1
 void getNewDeck(CardArray & deck){
 	deck.maxCards = DECK_SIZE;
-	deck.usedCards = DECK_SIZE;
+	deck.currentCards = DECK_SIZE;
 	deck.cards = new Card[DECK_SIZE];
 
 	string suit[] = {"Spades", "Hearts", "Diamonds", "Clubs"};
@@ -178,10 +183,46 @@ void printDeck(const CardArray & deck){
 
 void shuffleDeck(CardArray & deck){
 	srand(time(0));
-	for(int i = 0; i < 52; i++){
+	for(int i = 0; i < DECK_SIZE; i++){
 		int roll = rand() % 52;
 		string temp = deck.cards[roll].description;
 		deck.cards[roll].description = deck.cards[i].description;
 		deck.cards[i].description = temp;
 	}
+}
+
+// PART 2
+int blackjack(CardArray & deck){
+	CardArray playerHand;
+	CardArray dealerHand;
+
+	playerHand.cards = new Card[playerHand.currentCards];
+	dealerHand.cards = new Card[dealerHand.currentCards];
+
+	playerHand.maxCards = MAX_HAND;
+	playerHand.currentCards = 0;
+
+	// TO DO:
+	// - Check on usage of const for deal function
+	// - Implement hitting and standing using user input
+		// - Deal again when hit
+	// - Create the dealer
+	// - Consistently check score to see if 21 or more
+	// - Delete the dynamic memory arrays
+
+	return 0;
+}
+
+void deal(CardArray & deck, CardArray & hand){ // Says to use constant but doesnt work if u do
+	hand.cards[hand.currentCards] = deck.cards[deck.currentCards];
+	deck.currentCards--;
+	hand.currentCards++;
+}
+
+int scoreCheck(CardArray deck){
+	int score = 0;
+	for(int i = 0; i < deck.currentCards; i++){
+		score += deck.cards[i].value;
+	}
+	return score;
 }
