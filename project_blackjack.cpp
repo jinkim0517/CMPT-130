@@ -40,7 +40,8 @@ string swap(string card);
 void shuffleDeck(CardArray & deck);
 void printDeck(const CardArray & deck);
 int blackjack(CardArray & deck);
-void deal(const CardArray & deck, const CardArray & hand);
+void deal(CardArray & deck, CardArray & hand);
+int scoreCheck(CardArray deck);
 
 int main() {
 	CardArray deck1;
@@ -51,7 +52,9 @@ int main() {
 	shuffleDeck(deck1);
 	cout << "Shuffled DECK:" << endl;
 	printDeck(deck1);
-	delete[] deck1.cards;
+	cout << endl;
+	blackjack(deck1);
+	return 0;
 } 
 
 
@@ -196,11 +199,36 @@ int blackjack(CardArray & deck){
 	CardArray playerHand;
 	CardArray dealerHand;
 
-	playerHand.cards = new Card[playerHand.currentCards];
-	dealerHand.cards = new Card[dealerHand.currentCards];
+	playerHand.cards = new Card[MAX_HAND];
+	dealerHand.cards = new Card[MAX_HAND];
 
 	playerHand.maxCards = MAX_HAND;
 	playerHand.currentCards = 0;
+
+	dealerHand.maxCards = MAX_HAND;
+	dealerHand.currentCards = 0;
+
+	cout << "Deal First Card" << endl;
+	cout << "---------------" << endl;
+
+	deal(deck, playerHand);
+	deal(deck, dealerHand);
+
+	cout << "+Player+" << setw(4) << playerHand.cards[playerHand.currentCards - 1].description << endl;
+	cout << "*Dealer*" << setw(4) << dealerHand.cards[dealerHand.currentCards - 1].description << endl;
+	cout << endl;
+
+	cout << "Deal Second Card" << endl;
+	cout << "---------------" << endl;
+
+	deal(deck, playerHand);
+	deal(deck, dealerHand); 
+
+	cout << "+Player+" << setw(4) << playerHand.cards[playerHand.currentCards - 2].description ;
+	cout << setw(4) << playerHand.cards[playerHand.currentCards - 1].description << endl;
+	cout << "*Dealer*" << setw(4) << dealerHand.cards[dealerHand.currentCards - 2].description;
+	cout << setw(4) << dealerHand.cards[playerHand.currentCards - 1].description << endl;
+
 
 	// TO DO:
 	// - Check on usage of const for deal function
@@ -214,7 +242,7 @@ int blackjack(CardArray & deck){
 }
 
 void deal(CardArray & deck, CardArray & hand){ // Says to use constant but doesnt work if u do
-	hand.cards[hand.currentCards] = deck.cards[deck.currentCards];
+	hand.cards[hand.currentCards] = deck.cards[deck.currentCards - 1];
 	deck.currentCards--;
 	hand.currentCards++;
 }
