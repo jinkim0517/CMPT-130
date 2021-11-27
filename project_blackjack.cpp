@@ -42,6 +42,7 @@ void printDeck(const CardArray & deck);
 int blackjack(CardArray & deck);
 void deal(CardArray & deck, CardArray & hand);
 int scoreCheck(CardArray deck);
+void printCards(CardArray deck);
 
 int main() {
 	CardArray deck1;
@@ -80,9 +81,11 @@ void getNewDeck(CardArray & deck){
 			firstSet++;
 			if(deck.cards[i].rank == 1){
 				deck.cards[i].description = "AS";
+				deck.cards[i].value = value[10];
 			}
 			else if (deck.cards[i].rank > 1 && deck.cards[i].rank < 11){
 				deck.cards[i].description = to_string(deck.cards[i].rank) + 'S';
+				deck.cards[i].value = deck.cards[i].rank;
 			}
 			else if (deck.cards[i].rank >= 11){
 				if(deck.cards[i].rank == 11){
@@ -94,6 +97,7 @@ void getNewDeck(CardArray & deck){
 				else if(deck.cards[i].rank == 13){
 					deck.cards[i].description = "KS";
 				}
+				deck.cards[i].rank = value[9];
 			}
 		}
 		else if(i >= 13 && i < 26){
@@ -103,9 +107,11 @@ void getNewDeck(CardArray & deck){
 
 			if(deck.cards[i].rank == 1){
 				deck.cards[i].description = "AH";
+				deck.cards[i].value = value[10];
 			}
 			else if (deck.cards[i].rank > 1 && deck.cards[i].rank < 11){
 				deck.cards[i].description = to_string(deck.cards[i].rank) + 'H';
+				deck.cards[i].value = deck.cards[i].rank;
 			}
 			else if (deck.cards[i].rank >= 11){
 				if(deck.cards[i].rank == 11){
@@ -117,6 +123,7 @@ void getNewDeck(CardArray & deck){
 				else if(deck.cards[i].rank == 13){
 					deck.cards[i].description = "KH";
 				}
+				deck.cards[i].rank = value[9];
 			}
 		}
 		else if(i >= 26 && i < 39){
@@ -127,9 +134,11 @@ void getNewDeck(CardArray & deck){
 
 			if(deck.cards[i].rank == 1){
 				deck.cards[i].description = "AD";
+				deck.cards[i].value = value[10];
 			}
 			else if (deck.cards[i].rank > 1 && deck.cards[i].rank < 11){
 				deck.cards[i].description = to_string(deck.cards[i].rank) + 'D';
+				deck.cards[i].value = deck.cards[i].rank;
 			}
 			else if (deck.cards[i].rank >= 11){
 				if(deck.cards[i].rank == 11){
@@ -141,6 +150,7 @@ void getNewDeck(CardArray & deck){
 				else if(deck.cards[i].rank == 13){
 					deck.cards[i].description = "KD";
 				}
+				deck.cards[i].rank = value[9];
 			}
 		}
 		else if(i >= 39 && i < 52){
@@ -150,9 +160,11 @@ void getNewDeck(CardArray & deck){
 
 			if(deck.cards[i].rank == 1){
 				deck.cards[i].description = "AC";
+				deck.cards[i].value = value[10];
 			}
 			else if (deck.cards[i].rank > 1 && deck.cards[i].rank < 11){
 				deck.cards[i].description = to_string(deck.cards[i].rank) + 'C';
+				deck.cards[i].value = deck.cards[i].rank;
 			}
 			else if (deck.cards[i].rank >= 11){
 				if(deck.cards[i].rank == 11){
@@ -164,6 +176,7 @@ void getNewDeck(CardArray & deck){
 				else if(deck.cards[i].rank == 13){
 					deck.cards[i].description = "KC";
 				}
+				deck.cards[i].rank = value[9];
 			}
 		}
 	}
@@ -214,8 +227,11 @@ int blackjack(CardArray & deck){
 	deal(deck, playerHand);
 	deal(deck, dealerHand);
 
-	cout << "+Player+" << setw(4) << playerHand.cards[playerHand.currentCards - 1].description << endl;
-	cout << "*Dealer*" << setw(4) << dealerHand.cards[dealerHand.currentCards - 1].description << endl;
+	cout << "+Player+";
+	printCards(playerHand);
+	cout << endl;
+	cout << "*Dealer*";
+	printCards(dealerHand);
 	cout << endl;
 
 	cout << "Deal Second Card" << endl;
@@ -224,11 +240,38 @@ int blackjack(CardArray & deck){
 	deal(deck, playerHand);
 	deal(deck, dealerHand); 
 
-	cout << "+Player+" << setw(4) << playerHand.cards[playerHand.currentCards - 2].description ;
-	cout << setw(4) << playerHand.cards[playerHand.currentCards - 1].description << endl;
-	cout << "*Dealer*" << setw(4) << dealerHand.cards[dealerHand.currentCards - 2].description;
-	cout << setw(4) << dealerHand.cards[playerHand.currentCards - 1].description << endl;
+	cout << "+Player+" ;
+	printCards(playerHand);
+	cout << endl;
+	cout << "*Dealer*";
+	printCards(dealerHand);
+	cout << endl;
 
+	if (scoreCheck(playerHand) == 21){
+		cout << "You Win!!!";
+	}
+	else if (scoreCheck(playerHand) > 21){
+		cout << "BUST!!! You lose";
+	}
+	cout << "deezer" << playerHand.cards[0].value;
+	char decision;
+	cout << "Enter h to hit or s to stand: ";
+	cin >> decision;
+
+	while (decision == 'h'){
+		deal(deck, playerHand);
+		printCards(playerHand);
+		cout << endl;
+		cout << "Enter h to hit or s to stand: ";
+		cin >> decision;
+
+		if (scoreCheck(playerHand) == 21){
+			cout << "You Win!!!";
+		}
+		else if (scoreCheck(playerHand) > 21){
+			cout << "BUST!!! You lose";
+		}
+}
 
 	// TO DO:
 	// - Check on usage of const for deal function
@@ -249,8 +292,14 @@ void deal(CardArray & deck, CardArray & hand){ // Says to use constant but doesn
 
 int scoreCheck(CardArray deck){
 	int score = 0;
-	for(int i = 0; i < deck.currentCards; i++){
+	for(int i = 0; i <= deck.currentCards; i++){
 		score += deck.cards[i].value;
 	}
 	return score;
+}
+
+void printCards(CardArray deck){
+	for(int i = 0; i < deck.maxCards; i++){
+		cout << setw(4) << deck.cards[i].description;
+	}
 }
