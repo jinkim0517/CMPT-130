@@ -54,6 +54,8 @@ int main() {
 	cout << "Shuffled DECK:" << endl;
 	printDeck(deck1);
 	cout << endl;
+	/*int i = 0;
+	cout << deck1.cards[i].description << "//" << deck1.cards[i].value << "//" << deck1.cards[i].rank;*/
 	blackjack(deck1);
 	return 0;
 } 
@@ -201,9 +203,9 @@ void shuffleDeck(CardArray & deck){
 	srand(time(0));
 	for(int i = 0; i < DECK_SIZE; i++){
 		int roll = rand() % 52;
-		string temp = deck.cards[roll].description;
-		deck.cards[roll].description = deck.cards[i].description;
-		deck.cards[i].description = temp;
+		Card temp = deck.cards[roll];
+		deck.cards[roll] = deck.cards[i];
+		deck.cards[i] = temp;
 	}
 }
 
@@ -224,8 +226,10 @@ int blackjack(CardArray & deck){
 	cout << "Deal First Card" << endl;
 	cout << "---------------" << endl;
 
+	cout << "////" << playerHand.currentCards;
 	deal(deck, playerHand);
 	deal(deck, dealerHand);
+	cout << "////" << playerHand.currentCards;
 
 	cout << "+Player+";
 	printCards(playerHand);
@@ -239,39 +243,44 @@ int blackjack(CardArray & deck){
 
 	deal(deck, playerHand);
 	deal(deck, dealerHand); 
+	cout << "////" << playerHand.currentCards;
 
 	cout << "+Player+" ;
 	printCards(playerHand);
 	cout << endl;
 	cout << "*Dealer*";
-	printCards(dealerHand);
+	cout << setw(4) << dealerHand.cards[0].description << setw(4) << "??";
 	cout << endl;
 
+	cout << scoreCheck(playerHand);
+
 	if (scoreCheck(playerHand) == 21){
-		cout << "You Win!!!";
+		cout << "You Win!!!" << endl;
 	}
 	else if (scoreCheck(playerHand) > 21){
-		cout << "BUST!!! You lose";
+		cout << "BUST!!! You lose" << endl;
 	}
-	cout << "deezer" << playerHand.cards[0].value;
+	
 	char decision;
 	cout << "Enter h to hit or s to stand: ";
 	cin >> decision;
 
 	while (decision == 'h'){
+		int score = scoreCheck(playerHand);
+		if (score == 21){
+			cout << "You Win!!!" << endl;
+		}
+		else if (score > 21){
+			cout << "BUST!!! You lose" << endl;
+		}
+
 		deal(deck, playerHand);
 		printCards(playerHand);
 		cout << endl;
 		cout << "Enter h to hit or s to stand: ";
 		cin >> decision;
-
-		if (scoreCheck(playerHand) == 21){
-			cout << "You Win!!!";
-		}
-		else if (scoreCheck(playerHand) > 21){
-			cout << "BUST!!! You lose";
-		}
-}
+		cout << "////" << scoreCheck(playerHand);
+	}
 
 	// TO DO:
 	// - Check on usage of const for deal function
