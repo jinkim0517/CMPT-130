@@ -1,3 +1,10 @@
+// TO DO:
+// - Modify result comments for each scenario
+// - Formatting line to make it look nicer
+// - Start PART 3
+
+
+
 #include <iostream>
 #include <iomanip>
 #include <ios>
@@ -54,8 +61,8 @@ int main() {
 	cout << "Shuffled DECK:" << endl;
 	printDeck(deck1);
 	cout << endl;
-	/*int i = 0;
-	cout << deck1.cards[i].description << "//" << deck1.cards[i].value << "//" << deck1.cards[i].rank;*/
+	//int i = 0;
+	//cout << deck1.cards[i].description << "//" << deck1.cards[i].value << "//" << deck1.cards[i].rank;
 	blackjack(deck1);
 	return 0;
 } 
@@ -92,14 +99,16 @@ void getNewDeck(CardArray & deck){
 			else if (deck.cards[i].rank >= 11){
 				if(deck.cards[i].rank == 11){
 					deck.cards[i].description = "JS";
+					deck.cards[i].value = value[9];
 				}
 				else if(deck.cards[i].rank == 12){
 					deck.cards[i].description = "QS";
+					deck.cards[i].value = value[9];
 				}
 				else if(deck.cards[i].rank == 13){
 					deck.cards[i].description = "KS";
+					deck.cards[i].value = value[9];
 				}
-				deck.cards[i].rank = value[9];
 			}
 		}
 		else if(i >= 13 && i < 26){
@@ -118,14 +127,16 @@ void getNewDeck(CardArray & deck){
 			else if (deck.cards[i].rank >= 11){
 				if(deck.cards[i].rank == 11){
 					deck.cards[i].description = "JH";
+					deck.cards[i].value = value[9];
 				}
 				else if(deck.cards[i].rank == 12){
 					deck.cards[i].description = "QH";
+					deck.cards[i].value = value[9];
 				}
 				else if(deck.cards[i].rank == 13){
 					deck.cards[i].description = "KH";
+					deck.cards[i].value = value[9];
 				}
-				deck.cards[i].rank = value[9];
 			}
 		}
 		else if(i >= 26 && i < 39){
@@ -145,14 +156,16 @@ void getNewDeck(CardArray & deck){
 			else if (deck.cards[i].rank >= 11){
 				if(deck.cards[i].rank == 11){
 					deck.cards[i].description = "JD";
+					deck.cards[i].value = value[9];
 				}
 				else if(deck.cards[i].rank == 12){
 					deck.cards[i].description = "QD";
+					deck.cards[i].value = value[9];
 				}
 				else if(deck.cards[i].rank == 13){
 					deck.cards[i].description = "KD";
+					deck.cards[i].value = value[9];
 				}
-				deck.cards[i].rank = value[9];
 			}
 		}
 		else if(i >= 39 && i < 52){
@@ -171,14 +184,16 @@ void getNewDeck(CardArray & deck){
 			else if (deck.cards[i].rank >= 11){
 				if(deck.cards[i].rank == 11){
 					deck.cards[i].description = "JC";
+					deck.cards[i].value = value[9];
 				}
 				else if(deck.cards[i].rank == 12){
 					deck.cards[i].description = "QC";
+					deck.cards[i].value = value[9];
 				}
 				else if(deck.cards[i].rank == 13){
 					deck.cards[i].description = "KC";
+					deck.cards[i].value = value[9];
 				}
-				deck.cards[i].rank = value[9];
 			}
 		}
 	}
@@ -226,10 +241,8 @@ int blackjack(CardArray & deck){
 	cout << "Deal First Card" << endl;
 	cout << "---------------" << endl;
 
-	cout << "////" << playerHand.currentCards;
 	deal(deck, playerHand);
 	deal(deck, dealerHand);
-	cout << "////" << playerHand.currentCards;
 
 	cout << "+Player+";
 	printCards(playerHand);
@@ -243,7 +256,6 @@ int blackjack(CardArray & deck){
 
 	deal(deck, playerHand);
 	deal(deck, dealerHand); 
-	cout << "////" << playerHand.currentCards;
 
 	cout << "+Player+" ;
 	printCards(playerHand);
@@ -252,44 +264,70 @@ int blackjack(CardArray & deck){
 	cout << setw(4) << dealerHand.cards[0].description << setw(4) << "??";
 	cout << endl;
 
-	cout << scoreCheck(playerHand);
-
 	if (scoreCheck(playerHand) == 21){
-		cout << "You Win!!!" << endl;
+		cout << "*Dealer*";
+		printCards(dealerHand);
+		cout << endl;
+
+		if (scoreCheck(dealerHand) == 21){
+			cout << "Tie!!!" << endl;
+		}
+		else{
+			cout << "You win!!!" << endl;
+		}
 	}
 	else if (scoreCheck(playerHand) > 21){
-		cout << "BUST!!! You lose" << endl;
-	}
-	
-	char decision;
-	cout << "Enter h to hit or s to stand: ";
-	cin >> decision;
-
-	while (decision == 'h'){
-		int score = scoreCheck(playerHand);
-		if (score == 21){
-			cout << "You Win!!!" << endl;
-		}
-		else if (score > 21){
-			cout << "BUST!!! You lose" << endl;
-		}
-
-		deal(deck, playerHand);
-		printCards(playerHand);
+		cout << "*Dealer*";
+		printCards(dealerHand);
 		cout << endl;
+		if (scoreCheck(dealerHand) > 21){
+			cout << "Tie!!!" << endl;
+		}
+		else{
+			cout << "You lose!!!" << endl;
+		}
+	}
+	else{
+		char decision;
 		cout << "Enter h to hit or s to stand: ";
 		cin >> decision;
-		cout << "////" << scoreCheck(playerHand);
+
+		int playerFinished = 0;
+
+		while (decision == 'h'){
+			deal(deck, playerHand);
+			cout << "+Player+";
+			printCards(playerHand);
+			cout << endl;
+
+			if (scoreCheck(playerHand) >= 21){
+				decision = 's';
+			}
+			else{
+				cout << "Enter h to hit or s to stand: ";
+				cin >> decision;
+			}
+		}
+
+		while (scoreCheck(dealerHand) < 17){
+			cout << "Dealing to the dealer" << endl;
+			cout << "---------------------" << endl;
+			deal(deck, dealerHand);
+			cout << "*Dealer*";
+			printCards(dealerHand);
+			cout << endl;
+		}
+
+		if((scoreCheck(playerHand) > scoreCheck(dealerHand)) && (scoreCheck(playerHand) <= 21)){
+			cout << "You Win!!!" << endl;
+		}
+		else if((scoreCheck(playerHand) == scoreCheck(dealerHand)) || (scoreCheck(playerHand) > 21 && scoreCheck(dealerHand) > 21)){
+			cout << "Tie!!!" << endl;
+		}
+		else{
+			cout << "You lose!!!" << endl;
+		}
 	}
-
-	// TO DO:
-	// - Check on usage of const for deal function
-	// - Implement hitting and standing using user input
-		// - Deal again when hit
-	// - Create the dealer
-	// - Consistently check score to see if 21 or more
-	// - Delete the dynamic memory arrays
-
 	return 0;
 }
 
