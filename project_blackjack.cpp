@@ -48,6 +48,7 @@ int blackjack(CardArray & deck);
 void deal(CardArray & deck, CardArray & hand);
 int scoreCheck(CardArray deck);
 void printCards(CardArray deck);
+void playBlackjack(CardArray & deck);
 
 int main() {
 	CardArray deck1;
@@ -59,9 +60,8 @@ int main() {
 	cout << "Shuffled DECK:" << endl;
 	printDeck(deck1);
 	cout << endl;
-	//int i = 0;
-	//cout << deck1.cards[i].description << "//" << deck1.cards[i].value << "//" << deck1.cards[i].rank;
-	blackjack(deck1);
+	
+	playBlackjack(deck1);
 	return 0;
 } 
 
@@ -264,6 +264,8 @@ int blackjack(CardArray & deck){
 	cout << setw(4) << dealerHand.cards[0].description << setw(4) << "??";
 	cout << endl;
 
+	int result = 0;
+
 	if (scoreCheck(playerHand) == 21){
 		cout << "*Dealer*:";
 		printCards(dealerHand);
@@ -271,9 +273,11 @@ int blackjack(CardArray & deck){
 
 		if (scoreCheck(dealerHand) == 21){
 			cout << remarks[2] << endl;
+			result = 0;
 		}
 		else{
 			cout << remarks[1] << endl;
+			result = 1;
 		}
 	}
 	else if (scoreCheck(playerHand) > 21){
@@ -282,15 +286,24 @@ int blackjack(CardArray & deck){
 		cout << endl;
 		if (scoreCheck(dealerHand) > 21){
 			cout << remarks[3] << endl;
+			result = 0;
 		}
 		else{
 			cout << remarks[4] << endl;
+			result = -1;
 		}
 	}
 	else{
 		char decision;
 		cout << "Enter h to hit or s to stand: ";
 		cin >> decision;
+		while(cin.fail()){
+			cin.clear();
+			cin.ignore(10000, '\n');
+			cout << "error" << endl;
+			cout << "Enter h to hit or s to stand: ";
+			cin >> decision;
+		}
 
 		while (decision == 'h'){
 			deal(deck, playerHand);
@@ -298,12 +311,19 @@ int blackjack(CardArray & deck){
 			printCards(playerHand);
 			cout << endl;
 
-			if (scoreCheck(playerHand) >= 21){ // If you get 21 on first hit it does not print dealer hand for some reason
+			if (scoreCheck(playerHand) >= 21){
 				decision = 's';
 			}
 			else{
 				cout << "Enter h to hit or s to stand: ";
 				cin >> decision;
+				while(cin.fail()){
+					cin.clear();
+					cin.ignore(10000, '\n');
+					cout << "error" << endl;
+					cout << "Enter h to hit or s to stand: ";
+					cin >> decision;
+				}
 			}
 		}
 
@@ -327,28 +347,108 @@ int blackjack(CardArray & deck){
 		if(scoreCheck(playerHand) > scoreCheck(dealerHand)){
 			if(scoreCheck(playerHand) < 21){
 				cout << remarks[5];
+				result = 1;
 			}
 			else if(scoreCheck(playerHand) > 21 && scoreCheck(dealerHand) > 21){
 				cout << remarks[3];
+				result = 0;
 			}
 			else if(scoreCheck(playerHand) == 21){
 				cout << remarks[1];
+				result = 1;
+			}
+			else if(scoreCheck(playerHand) > 21){
+				cout << remarks[4];
+				result = -1;
 			}
 		}
 		else if(scoreCheck(playerHand) < scoreCheck(dealerHand)){
-			if(scoreCheck(playerHand) < 21){
+			if(scoreCheck(playerHand) < 21 && scoreCheck(dealerHand) < 21){
 				cout << remarks[4];
+				result = -1;
 			}
 			else if(scoreCheck(playerHand) > 21 && scoreCheck(dealerHand) > 21){
 				cout << remarks[3];
+				result = 0;
+			}
+			else if(scoreCheck(playerHand) < 21 && scoreCheck(dealerHand) > 21){
+				cout << remarks[0];
+				result = 1;
+			}
+			else if(scoreCheck(dealerHand) == 21){
+				cout << remarks[4];
+				result = -1;
+			}
+			else if(scoreCheck(playerHand) == 21){
+				cout << remarks[1];
+				result = 1;
 			}
 		}
 		else if(scoreCheck(playerHand) == scoreCheck(dealerHand)){
 			cout << remarks[2];
+			result = 0;
 		}
-
 	}
-	return 0;
+	if(deck.currentCards == 0){
+		CardArray deck2;
+		getNewDeck(deck2);
+		shuffleDeck(deck2);
+		deck = deck2;
+	}
+	return result;
+}
+
+// PART 3
+void playBlackjack(CardArray & deck){
+	cout << "BLACKJACK" << endl;
+	cout << "---------" << endl;
+
+	char decision;
+	cout << "Do you want to play black jack? (y to play): ";
+	cin >> decision;
+
+	while(cin.fail()){
+		cin.clear();
+		cin.ignore(10000, '\n');
+		cout << "error" << endl;
+		cout << "Do you want to play black jack? (y to play): ";
+		cin >> decision;
+	}
+
+	int wins = 0;
+	int losses = 0;
+	int ties = 0;
+	int rounds = 0;
+
+	while(decision == 'y'){
+		rounds++;
+		int result = blackjack(deck);
+		if(result == 1){
+			wins++;
+		}
+		else if(result == -1){
+			losses++;
+		}
+		else if(result == 0){
+			ties++;
+		}
+		cout << endl << "_________________________" << endl;
+		cout << "Do you want to play another round of Blackjack? (y to play): ";
+		cin >> decision;
+
+		while(cin.fail()){
+			cin.clear();
+			cin.ignore(10000, '\n');
+			cout << "error" << endl;
+			cout << "Do you want to play black jack? (y to play): ";
+			cin >> decision;
+		}
+	}
+
+	cout << "Thanks for playing! You played " << rounds << " rounds, and your record was: " << endl;
+	cout << setw(4) << "Wins: " << setw(6) << wins << endl;
+	cout << setw(4) << "Losses: " << setw(4) << losses << endl;
+	cout << setw(4) << "Ties: " << setw(6) << ties << endl;
 }
 
 void deal(CardArray & deck, CardArray & hand){ // Says to use constant but doesnt work if u do
