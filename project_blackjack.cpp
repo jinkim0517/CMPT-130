@@ -324,21 +324,29 @@ int blackjack(CardArray & deck){
 		cout << "Player Score: " << scoreCheck(playerHand) << endl;
 		cout << "Dealer Score: " << scoreCheck(dealerHand) << endl;
 
-		if((scoreCheck(playerHand) > scoreCheck(dealerHand)) && (scoreCheck(playerHand) < 21)){
-			cout << remarks[5] << endl;
+		if(scoreCheck(playerHand) > scoreCheck(dealerHand)){
+			if(scoreCheck(playerHand) < 21){
+				cout << remarks[5];
+			}
+			else if(scoreCheck(playerHand) > 21 && scoreCheck(dealerHand) > 21){
+				cout << remarks[3];
+			}
+			else if(scoreCheck(playerHand) == 21){
+				cout << remarks[1];
+			}
+		}
+		else if(scoreCheck(playerHand) < scoreCheck(dealerHand)){
+			if(scoreCheck(playerHand) < 21){
+				cout << remarks[4];
+			}
+			else if(scoreCheck(playerHand) > 21 && scoreCheck(dealerHand) > 21){
+				cout << remarks[3];
+			}
 		}
 		else if(scoreCheck(playerHand) == scoreCheck(dealerHand)){
-			cout << remarks[2] << endl;
+			cout << remarks[2];
 		}
-		else if(scoreCheck(playerHand) > 21 && scoreCheck(dealerHand) > 21){
-			cout << remarks[3] << endl;
-		}
-		else if((scoreCheck(playerHand) == 21) && (scoreCheck(dealerHand) != 21)){
-			cout << remarks[1] << endl;
-		}
-		else{
-			cout << remarks[4] << endl;
-		}
+
 	}
 	return 0;
 }
