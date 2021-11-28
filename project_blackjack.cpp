@@ -3,8 +3,6 @@
 // - Formatting line to make it look nicer
 // - Start PART 3
 
-
-
 #include <iostream>
 #include <iomanip>
 #include <ios>
@@ -238,53 +236,55 @@ int blackjack(CardArray & deck){
 	dealerHand.maxCards = MAX_HAND;
 	dealerHand.currentCards = 0;
 
+	string remarks[] = {"Dealer is bust, you win!", "Blackjack, you win!", "Game is tied", "Double bust, the game is tied!", "You lose!", "You win!"};
+
 	cout << "Deal First Card" << endl;
 	cout << "---------------" << endl;
 
 	deal(deck, playerHand);
 	deal(deck, dealerHand);
 
-	cout << "+Player+";
+	cout << "+Player+:";
 	printCards(playerHand);
 	cout << endl;
-	cout << "*Dealer*";
+	cout << "*Dealer*:";
 	printCards(dealerHand);
 	cout << endl;
 
-	cout << "Deal Second Card" << endl;
+	cout << endl << "Deal Second Card" << endl;
 	cout << "---------------" << endl;
 
 	deal(deck, playerHand);
 	deal(deck, dealerHand); 
 
-	cout << "+Player+" ;
+	cout << "+Player+:";
 	printCards(playerHand);
 	cout << endl;
-	cout << "*Dealer*";
+	cout << "*Dealer*:";
 	cout << setw(4) << dealerHand.cards[0].description << setw(4) << "??";
 	cout << endl;
 
 	if (scoreCheck(playerHand) == 21){
-		cout << "*Dealer*";
+		cout << "*Dealer*:";
 		printCards(dealerHand);
 		cout << endl;
 
 		if (scoreCheck(dealerHand) == 21){
-			cout << "Tie!!!" << endl;
+			cout << remarks[2] << endl;
 		}
 		else{
-			cout << "You win!!!" << endl;
+			cout << remarks[1] << endl;
 		}
 	}
 	else if (scoreCheck(playerHand) > 21){
-		cout << "*Dealer*";
+		cout << "*Dealer*:";
 		printCards(dealerHand);
 		cout << endl;
 		if (scoreCheck(dealerHand) > 21){
-			cout << "Tie!!!" << endl;
+			cout << remarks[3] << endl;
 		}
 		else{
-			cout << "You lose!!!" << endl;
+			cout << remarks[4] << endl;
 		}
 	}
 	else{
@@ -292,15 +292,13 @@ int blackjack(CardArray & deck){
 		cout << "Enter h to hit or s to stand: ";
 		cin >> decision;
 
-		int playerFinished = 0;
-
 		while (decision == 'h'){
 			deal(deck, playerHand);
-			cout << "+Player+";
+			cout << "+Player+:";
 			printCards(playerHand);
 			cout << endl;
 
-			if (scoreCheck(playerHand) >= 21){
+			if (scoreCheck(playerHand) >= 21){ // If you get 21 on first hit it does not print dealer hand for some reason
 				decision = 's';
 			}
 			else{
@@ -309,23 +307,37 @@ int blackjack(CardArray & deck){
 			}
 		}
 
+		cout << endl << "Dealing to the dealer" << endl;
+		cout << "---------------------" << endl;
+		cout << "*Dealer*:";
+		printCards(dealerHand);
+		cout << endl;
+
 		while (scoreCheck(dealerHand) < 17){
-			cout << "Dealing to the dealer" << endl;
-			cout << "---------------------" << endl;
 			deal(deck, dealerHand);
-			cout << "*Dealer*";
+			cout << "*Dealer*:";
 			printCards(dealerHand);
 			cout << endl;
 		}
 
-		if((scoreCheck(playerHand) > scoreCheck(dealerHand)) && (scoreCheck(playerHand) <= 21)){
-			cout << "You Win!!!" << endl;
+		cout << endl;
+		cout << "Player Score: " << scoreCheck(playerHand) << endl;
+		cout << "Dealer Score: " << scoreCheck(dealerHand) << endl;
+
+		if((scoreCheck(playerHand) > scoreCheck(dealerHand)) && (scoreCheck(playerHand) < 21)){
+			cout << remarks[5] << endl;
 		}
-		else if((scoreCheck(playerHand) == scoreCheck(dealerHand)) || (scoreCheck(playerHand) > 21 && scoreCheck(dealerHand) > 21)){
-			cout << "Tie!!!" << endl;
+		else if(scoreCheck(playerHand) == scoreCheck(dealerHand)){
+			cout << remarks[2] << endl;
+		}
+		else if(scoreCheck(playerHand) > 21 && scoreCheck(dealerHand) > 21){
+			cout << remarks[3] << endl;
+		}
+		else if((scoreCheck(playerHand) == 21) && (scoreCheck(dealerHand) != 21)){
+			cout << remarks[1] << endl;
 		}
 		else{
-			cout << "You lose!!!" << endl;
+			cout << remarks[4] << endl;
 		}
 	}
 	return 0;
