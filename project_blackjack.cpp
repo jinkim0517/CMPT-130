@@ -1,7 +1,7 @@
-// TO DO:
-// - Modify result comments for each scenario
-// - Formatting line to make it look nicer
-// - Start PART 3
+// Jin Kim 	301539203
+// Advice: Followed BYCICLE website for optimal strategies
+// based on the first and second deals. Then, I added some general advice(ie Don't hit when the score is 20)
+// Academic honesty statement: I hereby confirm that this is my own work and I have not violated any of SFU’s Code of Academic Integrity and Good Conduct (S10.01).
 
 #include <iostream>
 #include <iomanip>
