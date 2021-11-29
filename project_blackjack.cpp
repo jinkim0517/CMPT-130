@@ -53,6 +53,7 @@ void printCards(CardArray deck);
 void playBlackjack(CardArray & deck);
 void aceChange(CardArray & deck);
 void advice(CardArray dealerHand, CardArray playerHand);
+void refillDeck(CardArray & deck);
 
 int main() {
 	CardArray deck1;
@@ -251,11 +252,15 @@ int blackjack(CardArray & deck){
 	// Array of possible statements/remarks to a play
 	string remarks[] = {"Dealer is bust, you win!", "Blackjack, you win!", "Game is tied", "Double bust, the game is tied!", "You lose!", "You win!"};
 
+	// Refills deck if cards run out
+	refillDeck(deck);
+
 	cout << "Deal First Card" << endl;
 	cout << "---------------" << endl;
 
 	// Deals first card
 	deal(deck, playerHand);
+	refillDeck(deck);
 	deal(deck, dealerHand);
 
 	cout << "+Player+:";
@@ -268,8 +273,11 @@ int blackjack(CardArray & deck){
 	cout << endl << "Deal Second Card" << endl;
 	cout << "---------------" << endl;
 
+	refillDeck(deck);
+
 	// Deals second card but hides the dealer's second card
 	deal(deck, playerHand);
+	refillDeck(deck);
 	deal(deck, dealerHand); 
 
 	cout << "+Player+:";
@@ -306,10 +314,14 @@ int blackjack(CardArray & deck){
 		if (scoreCheck(dealerHand) > 21){
 			cout << remarks[3] << endl;
 			result = 0;
+			delete[] dealerHand.cards;
+			delete[] playerHand.cards;
 		}
 		else{
 			cout << remarks[4] << endl;
 			result = -1;
+			delete[] dealerHand.cards;
+			delete[] playerHand.cards;
 		}
 	}
 	else{
@@ -328,6 +340,8 @@ int blackjack(CardArray & deck){
 		}
 
 		while (decision == 'h'){
+			// Refills deck if cards run out
+			refillDeck(deck);
 			deal(deck, playerHand);
 			cout << "+Player+:";
 			printCards(playerHand);
@@ -362,6 +376,8 @@ int blackjack(CardArray & deck){
 		cout << "*Dealer*:";
 		printCards(dealerHand);
 		cout << endl;
+		// Refills deck if cards run out
+		refillDeck(deck);
 
 		if(scoreCheck(playerHand) <= 21){
 			while (scoreCheck(dealerHand) < 17){
@@ -371,6 +387,13 @@ int blackjack(CardArray & deck){
 				cout << endl;
 				if(scoreCheck(dealerHand) > 21){
 					aceChange(dealerHand);
+				}
+				// Refills deck if cards run out
+				if(deck.currentCards == 0){
+					CardArray deck2;
+					getNewDeck(deck2);
+					shuffleDeck(deck2);
+					deck = deck2;
 				}
 			}
 		}
@@ -389,54 +412,68 @@ int blackjack(CardArray & deck){
 			if(scoreCheck(playerHand) < 21){
 				cout << remarks[5];
 				result = 1;
+				delete[] dealerHand.cards;
+				delete[] playerHand.cards;
 			}
 			else if(scoreCheck(playerHand) > 21 && scoreCheck(dealerHand) > 21){
 				cout << remarks[3];
 				result = 0;
+				delete[] dealerHand.cards;
+				delete[] playerHand.cards;
 			}
 			else if(scoreCheck(playerHand) == 21){
 				cout << remarks[1];
 				result = 1;
+				delete[] dealerHand.cards;
+				delete[] playerHand.cards;
 			}
 			else if(scoreCheck(playerHand) > 21){
 				cout << remarks[4];
 				result = -1;
+				delete[] dealerHand.cards;
+				delete[] playerHand.cards;
 			}
 		}
 		else if(scoreCheck(playerHand) < scoreCheck(dealerHand)){
 			if(scoreCheck(playerHand) < 21 && scoreCheck(dealerHand) < 21){
 				cout << remarks[4];
 				result = -1;
+				delete[] dealerHand.cards;
+				delete[] playerHand.cards;
 			}
 			else if(scoreCheck(playerHand) > 21 && scoreCheck(dealerHand) > 21){
 				cout << remarks[3];
 				result = 0;
+				delete[] dealerHand.cards;
+				delete[] playerHand.cards;
 			}
 			else if(scoreCheck(playerHand) < 21 && scoreCheck(dealerHand) > 21){
 				cout << remarks[0];
 				result = 1;
+				delete[] dealerHand.cards;
+				delete[] playerHand.cards;
 			}
 			else if(scoreCheck(dealerHand) == 21){
 				cout << remarks[4];
 				result = -1;
+				delete[] dealerHand.cards;
+				delete[] playerHand.cards;
 			}
 			else if(scoreCheck(playerHand) == 21){
 				cout << remarks[1];
 				result = 1;
+				delete[] dealerHand.cards;
+				delete[] playerHand.cards;
 			}
 		}
 		else if(scoreCheck(playerHand) == scoreCheck(dealerHand)){
 			cout << remarks[2];
 			result = 0;
+			delete[] dealerHand.cards;
+			delete[] playerHand.cards;
 		}
 	}
-	// Refills deck if cards run out
-	if(deck.currentCards == 0){
-		CardArray deck2;
-		getNewDeck(deck2);
-		shuffleDeck(deck2);
-		deck = deck2;
-	}
+	delete[] deck.cards;
 	return result;
 }
 
@@ -559,5 +596,14 @@ void advice(CardArray dealerHand, CardArray playerHand){
 	}
 	else if(scoreCheck(playerHand) >= 17){
 		cout <<"*Hint*: You're close to 21! You should stand, because you have a high chance of bust if you hit." << endl;
+	}
+}
+
+void refillDeck(CardArray & deck){
+	if(deck.currentCards == 0){
+		CardArray newDeck;
+		getNewDeck(newDeck);
+		shuffleDeck(newDeck);
+		deck = newDeck;
 	}
 }
