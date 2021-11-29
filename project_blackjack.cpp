@@ -13,6 +13,7 @@ using namespace std;
 const int DECK_SIZE = 52;
 const int MAX_HAND = 11;
 
+// Card structure
 struct Card {
 	string suit;
 	string description;
@@ -27,6 +28,7 @@ struct Card {
 	}
 };
 
+// CardArray structure for decks and hands
 struct CardArray {
 	Card* cards;
 	int maxCards;
@@ -66,22 +68,25 @@ int main() {
 } 
 
 
-// PART 1
+// Creates new deck (Part 1)
 void getNewDeck(CardArray & deck){
 	deck.maxCards = DECK_SIZE;
 	deck.currentCards = DECK_SIZE;
 	deck.cards = new Card[DECK_SIZE];
 
+	// Array of value to assign to variables
 	string suit[] = {"Spades", "Hearts", "Diamonds", "Clubs"};
 	int value[] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11};
 	int rank[] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13};
 	
+	// Variables to keep track of the number of cards in a set
 	int firstSet = 0;
 	int secondSet = 0;
 	int thirdSet = 0;
 	int fourthSet = 0;
 
 	for(int i = 0; i < 52; i++){
+		// Assigns values to the first set
 		if(i < 13){
 			deck.cards[i].suit = suit[0];
 			deck.cards[i].rank = rank[firstSet];
@@ -109,6 +114,7 @@ void getNewDeck(CardArray & deck){
 				}
 			}
 		}
+		// Assigns values to the second set
 		else if(i >= 13 && i < 26){
 			deck.cards[i].suit = suit[1];
 			deck.cards[i].rank = rank[secondSet];
@@ -137,6 +143,7 @@ void getNewDeck(CardArray & deck){
 				}
 			}
 		}
+		// Assigns values to the third set
 		else if(i >= 26 && i < 39){
 			int n = 0;
 			deck.cards[i].suit = suit[2];
@@ -166,6 +173,7 @@ void getNewDeck(CardArray & deck){
 				}
 			}
 		}
+		// Assigns values to the fourth set
 		else if(i >= 39 && i < 52){
 			deck.cards[i].suit = suit[3];
 			deck.cards[i].rank = rank[fourthSet];
@@ -197,6 +205,7 @@ void getNewDeck(CardArray & deck){
 	}
 }
 
+// Prints all cards in a CardArray variable
 void printDeck(const CardArray & deck){
 	for(int i = 0; i < 52; i++){
 		cout << setw(4) << deck.cards[i].description;
@@ -212,6 +221,7 @@ void printDeck(const CardArray & deck){
 	}
 }
 
+// Shuffles a deck
 void shuffleDeck(CardArray & deck){
 	srand(time(0));
 	for(int i = 0; i < DECK_SIZE; i++){
@@ -222,7 +232,7 @@ void shuffleDeck(CardArray & deck){
 	}
 }
 
-// PART 2
+// Blackjack game (Part 2 & 3)
 int blackjack(CardArray & deck){
 	CardArray playerHand;
 	CardArray dealerHand;
@@ -236,11 +246,13 @@ int blackjack(CardArray & deck){
 	dealerHand.maxCards = MAX_HAND;
 	dealerHand.currentCards = 0;
 
+	// Array of possible statements/remarks to a play
 	string remarks[] = {"Dealer is bust, you win!", "Blackjack, you win!", "Game is tied", "Double bust, the game is tied!", "You lose!", "You win!"};
 
 	cout << "Deal First Card" << endl;
 	cout << "---------------" << endl;
 
+	// Deals first card
 	deal(deck, playerHand);
 	deal(deck, dealerHand);
 
@@ -254,6 +266,7 @@ int blackjack(CardArray & deck){
 	cout << endl << "Deal Second Card" << endl;
 	cout << "---------------" << endl;
 
+	// Deals second card but hides the dealer's second card
 	deal(deck, playerHand);
 	deal(deck, dealerHand); 
 
@@ -266,6 +279,7 @@ int blackjack(CardArray & deck){
 
 	int result = 0;
 
+	// Cehecks for a bust or blackjack off of initial deal
 	if (scoreCheck(playerHand) == 21){
 		cout << "*Dealer*:";
 		printCards(dealerHand);
@@ -294,9 +308,11 @@ int blackjack(CardArray & deck){
 		}
 	}
 	else{
+		// Hit or stand input
 		char decision;
 		cout << "Enter h to hit or s to stand: ";
 		cin >> decision;
+		// Error handling
 		while(cin.fail()){
 			cin.clear();
 			cin.ignore(10000, '\n');
@@ -317,6 +333,7 @@ int blackjack(CardArray & deck){
 			else{
 				cout << "Enter h to hit or s to stand: ";
 				cin >> decision;
+				// Error handling
 				while(cin.fail()){
 					cin.clear();
 					cin.ignore(10000, '\n');
@@ -327,6 +344,7 @@ int blackjack(CardArray & deck){
 			}
 		}
 
+		// Reveal dealers second card and deal until score is greater than 16
 		cout << endl << "Dealing to the dealer" << endl;
 		cout << "---------------------" << endl;
 		cout << "*Dealer*:";
@@ -340,10 +358,13 @@ int blackjack(CardArray & deck){
 			cout << endl;
 		}
 
+		// Print scores
 		cout << endl;
 		cout << "Player Score: " << scoreCheck(playerHand) << endl;
 		cout << "Dealer Score: " << scoreCheck(dealerHand) << endl;
 
+		// Print remarks for specific win/lose scenarios
+		// Sets result variable to the corresponding outcome (1 = win, 0 = tie, -1 = lose)
 		if(scoreCheck(playerHand) > scoreCheck(dealerHand)){
 			if(scoreCheck(playerHand) < 21){
 				cout << remarks[5];
@@ -389,6 +410,7 @@ int blackjack(CardArray & deck){
 			result = 0;
 		}
 	}
+	// Refills deck if cards run out
 	if(deck.currentCards == 0){
 		CardArray deck2;
 		getNewDeck(deck2);
@@ -398,7 +420,7 @@ int blackjack(CardArray & deck){
 	return result;
 }
 
-// PART 3
+// Function to play multiple games and track wins, losses, and ties (Part 3)
 void playBlackjack(CardArray & deck){
 	cout << "BLACKJACK" << endl;
 	cout << "---------" << endl;
@@ -407,12 +429,14 @@ void playBlackjack(CardArray & deck){
 	cout << "Do you want to play black jack? (y to play): ";
 	cin >> decision;
 
+	// Error handling
 	while(cin.fail()){
 		cin.clear();
 		cin.ignore(10000, '\n');
 		cout << "error" << endl;
 		cout << "Do you want to play black jack? (y to play): ";
 		cin >> decision;
+		
 	}
 
 	int wins = 0;
@@ -436,6 +460,7 @@ void playBlackjack(CardArray & deck){
 		cout << "Do you want to play another round of Blackjack? (y to play): ";
 		cin >> decision;
 
+		// Error handling
 		while(cin.fail()){
 			cin.clear();
 			cin.ignore(10000, '\n');
@@ -445,18 +470,21 @@ void playBlackjack(CardArray & deck){
 		}
 	}
 
+	// Prints data collected
 	cout << "Thanks for playing! You played " << rounds << " rounds, and your record was: " << endl;
 	cout << setw(4) << "Wins: " << setw(6) << wins << endl;
 	cout << setw(4) << "Losses: " << setw(4) << losses << endl;
 	cout << setw(4) << "Ties: " << setw(6) << ties << endl;
 }
 
+// Deals cards to a hand from a deck
 void deal(CardArray & deck, CardArray & hand){ // Says to use constant but doesnt work if u do
 	hand.cards[hand.currentCards] = deck.cards[deck.currentCards - 1];
 	deck.currentCards--;
 	hand.currentCards++;
 }
 
+// Tallies scores of a hand using values
 int scoreCheck(CardArray deck){
 	int score = 0;
 	for(int i = 0; i <= deck.currentCards; i++){
@@ -465,8 +493,13 @@ int scoreCheck(CardArray deck){
 	return score;
 }
 
+// Prints all cards of a hand (Does not have same formatting as printDeck)
 void printCards(CardArray deck){
 	for(int i = 0; i < deck.maxCards; i++){
 		cout << setw(4) << deck.cards[i].description;
 	}
+}
+
+void advice(CardArray deck){
+
 }

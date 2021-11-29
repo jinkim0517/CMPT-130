@@ -12,6 +12,7 @@
         "xlocnum": "cpp",
         "xtr1common": "cpp",
         "ostream": "cpp",
-        "__locale": "cpp"
+        "__locale": "cpp",
+        "istream": "cpp"
     }
 }
