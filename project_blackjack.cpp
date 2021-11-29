@@ -51,6 +51,8 @@ void deal(CardArray & deck, CardArray & hand);
 int scoreCheck(CardArray deck);
 void printCards(CardArray deck);
 void playBlackjack(CardArray & deck);
+void aceChange(CardArray & deck);
+void advice(CardArray dealerHand, CardArray playerHand);
 
 int main() {
 	CardArray deck1;
@@ -279,7 +281,7 @@ int blackjack(CardArray & deck){
 
 	int result = 0;
 
-	// Cehecks for a bust or blackjack off of initial deal
+	// Checks for a bust or blackjack off of initial deal
 	if (scoreCheck(playerHand) == 21){
 		cout << "*Dealer*:";
 		printCards(dealerHand);
@@ -308,6 +310,7 @@ int blackjack(CardArray & deck){
 		}
 	}
 	else{
+		advice(dealerHand, playerHand);
 		// Hit or stand input
 		char decision;
 		cout << "Enter h to hit or s to stand: ";
@@ -331,6 +334,7 @@ int blackjack(CardArray & deck){
 				decision = 's';
 			}
 			else{
+				advice(dealerHand, playerHand);
 				cout << "Enter h to hit or s to stand: ";
 				cin >> decision;
 				// Error handling
@@ -500,6 +504,42 @@ void printCards(CardArray deck){
 	}
 }
 
-void advice(CardArray deck){
+void aceChange(CardArray & deck){
+	for(int i = 0; i < deck.currentCards; i++){
+		if(deck.cards[i].value == 11){
+			deck.cards[i].value == 1;
+		}
+	}
+}
 
+void advice(CardArray dealerHand, CardArray playerHand){
+	int goodHigh = 11;
+	int goodLow = 7;
+	int poorHigh = 6;
+	int poorLow = 4;
+	int fairHigh = 3;
+	int fairLow = 2;
+
+	if(playerHand.currentCards == 2){
+		if(scoreCheck(playerHand) < 17){
+			if(dealerHand.cards[0].value >= goodLow && dealerHand.cards[0].value <= goodHigh){
+				cout << "*Hint*: You should keep drawing until your score is above 17, because the dealer has a high chance of ending with a high score!" << endl;
+			}
+			else if(dealerHand.cards[0].value >= poorLow && dealerHand.cards[0].value <= poorHigh){
+				cout << "*Hint*: You should only draw until your score is 12 or higher, because the dealer will likely draw three cards total, and will most likely bust!" << endl;
+			}
+			else if(dealerHand.cards[0].value >= fairLow && dealerHand.cards[0].value <= fairHigh){
+				cout << "*Hint*: You should only draw until your score is 13 or higher, because you can gain a high score without a high chance of bust!" << endl;
+			}
+			else if(playerHand.cards[0].rank == 1 || playerHand.cards[1].rank == 1){
+				cout << "*Hint*: You have a Soft Hand! Keep hitting until you reach a score of 18, because your ace will be counted as a 1 if you will bust!" << endl;
+			}
+		}
+		if(scoreCheck(playerHand) >= 17){
+			cout <<"*Hint*: You're close to 21! You should stand, because you have a high chance of bust if you hit." << endl;
+		}
+	}
+	else if(scoreCheck(playerHand) >= 17){
+		cout <<"*Hint*: You're close to 21! You should stand, because you have a high chance of bust if you hit." << endl;
+	}
 }
