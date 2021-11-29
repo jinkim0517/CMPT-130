@@ -283,6 +283,8 @@ int blackjack(CardArray & deck){
 
 	// Checks for a bust or blackjack off of initial deal
 	if (scoreCheck(playerHand) == 21){
+		cout << endl << "Dealing to the dealer" << endl;
+		cout << "---------------------" << endl;
 		cout << "*Dealer*:";
 		printCards(dealerHand);
 		cout << endl;
@@ -297,6 +299,7 @@ int blackjack(CardArray & deck){
 		}
 	}
 	else if (scoreCheck(playerHand) > 21){
+		// change all aces to 1
 		cout << "*Dealer*:";
 		printCards(dealerHand);
 		cout << endl;
@@ -330,7 +333,12 @@ int blackjack(CardArray & deck){
 			printCards(playerHand);
 			cout << endl;
 
-			if (scoreCheck(playerHand) >= 21){
+			// If the score is above 21, change all aces from 1 to 11
+			if(scoreCheck(playerHand) > 21){
+				aceChange(playerHand);
+			}
+
+			if (scoreCheck(playerHand) > 21){
 				decision = 's';
 			}
 			else{
@@ -355,11 +363,19 @@ int blackjack(CardArray & deck){
 		printCards(dealerHand);
 		cout << endl;
 
-		while (scoreCheck(dealerHand) < 17){
-			deal(deck, dealerHand);
-			cout << "*Dealer*:";
-			printCards(dealerHand);
-			cout << endl;
+		if(scoreCheck(playerHand) <= 21){
+			while (scoreCheck(dealerHand) < 17){
+				deal(deck, dealerHand);
+				cout << "*Dealer*:";
+				printCards(dealerHand);
+				cout << endl;
+				if(scoreCheck(dealerHand) > 21){
+					aceChange(dealerHand);
+				}
+			}
+		}
+		else{
+			aceChange(dealerHand);
 		}
 
 		// Print scores
@@ -504,14 +520,16 @@ void printCards(CardArray deck){
 	}
 }
 
+// Checks for any aces and changes value of ace card from 11 to 1
 void aceChange(CardArray & deck){
 	for(int i = 0; i < deck.currentCards; i++){
 		if(deck.cards[i].value == 11){
-			deck.cards[i].value == 1;
+			deck.cards[i].value = 1;
 		}
 	}
 }
 
+// Prints advice based on different scenarios
 void advice(CardArray dealerHand, CardArray playerHand){
 	int goodHigh = 11;
 	int goodLow = 7;
