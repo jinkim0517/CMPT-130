@@ -1,2 +1,1 @@
-
-		cout << "Dealer Score: " << scoreCheck(dealerHand) << endl;
+#include <cstdlib>

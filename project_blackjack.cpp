@@ -338,6 +338,11 @@ int blackjack(CardArray & deck){
 			cout << "Enter h to hit or s to stand: ";
 			cin >> decision;
 		}
+		while(decision != 'h' && decision != 's'){
+			cout << "error" << endl;
+			cout << "Enter h to hit or s to stand: ";
+			cin >> decision;
+		}
 
 		while (decision == 'h'){
 			// Refills deck if cards run out
@@ -363,6 +368,12 @@ int blackjack(CardArray & deck){
 				while(cin.fail()){
 					cin.clear();
 					cin.ignore(10000, '\n');
+					cout << "error" << endl;
+					cout << "Enter h to hit or s to stand: ";
+					cin >> decision;
+				}
+
+				while(decision != 'h' && decision != 's'){
 					cout << "error" << endl;
 					cout << "Enter h to hit or s to stand: ";
 					cin >> decision;
