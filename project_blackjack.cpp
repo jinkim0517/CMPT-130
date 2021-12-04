@@ -12,6 +12,8 @@
 using namespace std;
 const int DECK_SIZE = 52;
 const int MAX_HAND = 11;
+const int BLACKJACK = 21;
+const int DEALER_HIGH = 17;
 
 // Card structure
 struct Card {
@@ -88,7 +90,7 @@ void getNewDeck(CardArray & deck){
 	int thirdSet = 0;
 	int fourthSet = 0;
 
-	for(int i = 0; i < 52; i++){
+	for(int i = 0; i < DECK_SIZE; i++){
 		// Assigns values to the first set
 		if(i < 13){
 			deck.cards[i].suit = suit[0];
@@ -210,7 +212,7 @@ void getNewDeck(CardArray & deck){
 
 // Prints all cards in a CardArray variable
 void printDeck(const CardArray & deck){
-	for(int i = 0; i < 52; i++){
+	for(int i = 0; i < DECK_SIZE; i++){
 		cout << setw(4) << deck.cards[i].description;
 		if(i == 12){
 			cout << endl;
@@ -289,15 +291,17 @@ int blackjack(CardArray & deck){
 
 	int result = 0;
 
+	// Changes aces if intial deal results in a bust
+	aceChange(playerHand);
 	// Checks for a bust or blackjack off of initial deal
-	if (scoreCheck(playerHand) == 21){
+	if (scoreCheck(playerHand) == BLACKJACK){
 		cout << endl << "Dealing to the dealer" << endl;
 		cout << "---------------------" << endl;
 		cout << "*Dealer*:";
 		printCards(dealerHand);
 		cout << endl;
 
-		if (scoreCheck(dealerHand) == 21){
+		if (scoreCheck(dealerHand) == BLACKJACK){
 			cout << remarks[2] << endl;
 			result = 0;
 		}
@@ -306,14 +310,14 @@ int blackjack(CardArray & deck){
 			result = 1;
 		}
 	}
-	else if (scoreCheck(playerHand) > 21){
+	else if (scoreCheck(playerHand) > BLACKJACK){
 		cout << "*Dealer*:";
 		printCards(dealerHand);
 		cout << endl;
-		if (scoreCheck(dealerHand) > 21){
+		if (scoreCheck(dealerHand) > BLACKJACK){
 			// Changes ace values if dealer is bust
 			aceChange(dealerHand);
-			if (scoreCheck(dealerHand) > 21){
+			if (scoreCheck(dealerHand) > BLACKJACK){
 				cout << remarks[3] << endl;
 				result = 0;
 				delete[] dealerHand.cards;
@@ -358,7 +362,7 @@ int blackjack(CardArray & deck){
 			// If the score is above 21, change aces from 1 to 11
 			aceChange(playerHand);
 
-			if (scoreCheck(playerHand) > 21){
+			if (scoreCheck(playerHand) > BLACKJACK){
 				decision = 's';
 			}
 			else{
@@ -392,13 +396,13 @@ int blackjack(CardArray & deck){
 		refillDeck(deck);
 
 		// Deals to dealer if player is not bust
-		if(scoreCheck(playerHand) <= 21){
-			while (scoreCheck(dealerHand) < 17){
+		if(scoreCheck(playerHand) <= BLACKJACK){
+			while (scoreCheck(dealerHand) < DEALER_HIGH){
 				deal(deck, dealerHand);
 				cout << "*Dealer*:";
 				printCards(dealerHand);
 				cout << endl;
-				if(scoreCheck(dealerHand) > 21){
+				if(scoreCheck(dealerHand) > BLACKJACK){
 					aceChange(dealerHand);
 				}
 				// Refills deck if cards run out
@@ -425,25 +429,25 @@ int blackjack(CardArray & deck){
 		// Print remarks for specific win/lose scenarios using array above
 		// Sets result variable to the corresponding outcome (1 = win, 0 = tie, -1 = lose)
 		if(scoreCheck(playerHand) > scoreCheck(dealerHand)){
-			if(scoreCheck(playerHand) < 21){
+			if(scoreCheck(playerHand) < BLACKJACK){
 				cout << remarks[5];
 				result = 1;
 				delete[] dealerHand.cards;
 				delete[] playerHand.cards;
 			}
-			else if(scoreCheck(playerHand) > 21 && scoreCheck(dealerHand) > 21){
+			else if(scoreCheck(playerHand) > BLACKJACK && scoreCheck(dealerHand) > BLACKJACK){
 				cout << remarks[3];
 				result = 0;
 				delete[] dealerHand.cards;
 				delete[] playerHand.cards;
 			}
-			else if(scoreCheck(playerHand) == 21){
+			else if(scoreCheck(playerHand) == BLACKJACK){
 				cout << remarks[1];
 				result = 1;
 				delete[] dealerHand.cards;
 				delete[] playerHand.cards;
 			}
-			else if(scoreCheck(playerHand) > 21){
+			else if(scoreCheck(playerHand) > BLACKJACK){
 				cout << remarks[4];
 				result = -1;
 				delete[] dealerHand.cards;
@@ -451,31 +455,31 @@ int blackjack(CardArray & deck){
 			}
 		}
 		else if(scoreCheck(playerHand) < scoreCheck(dealerHand)){
-			if(scoreCheck(playerHand) < 21 && scoreCheck(dealerHand) < 21){
+			if(scoreCheck(playerHand) < BLACKJACK && scoreCheck(dealerHand) < BLACKJACK){
 				cout << remarks[4];
 				result = -1;
 				delete[] dealerHand.cards;
 				delete[] playerHand.cards;
 			}
-			else if(scoreCheck(playerHand) > 21 && scoreCheck(dealerHand) > 21){
+			else if(scoreCheck(playerHand) > BLACKJACK && scoreCheck(dealerHand) > BLACKJACK){
 				cout << remarks[3];
 				result = 0;
 				delete[] dealerHand.cards;
 				delete[] playerHand.cards;
 			}
-			else if(scoreCheck(playerHand) < 21 && scoreCheck(dealerHand) > 21){
+			else if(scoreCheck(playerHand) < BLACKJACK && scoreCheck(dealerHand) > BLACKJACK){
 				cout << remarks[0];
 				result = 1;
 				delete[] dealerHand.cards;
 				delete[] playerHand.cards;
 			}
-			else if(scoreCheck(dealerHand) == 21){
+			else if(scoreCheck(dealerHand) == BLACKJACK){
 				cout << remarks[4];
 				result = -1;
 				delete[] dealerHand.cards;
 				delete[] playerHand.cards;
 			}
-			else if(scoreCheck(playerHand) == 21){
+			else if(scoreCheck(playerHand) == BLACKJACK){
 				cout << remarks[1];
 				result = 1;
 				delete[] dealerHand.cards;
@@ -577,7 +581,7 @@ void printCards(CardArray deck){
 // if the score exceeds 21 because of it
 void aceChange(CardArray & deck){
 	for(int i = 0; i < deck.currentCards; i++){
-		if(scoreCheck(deck) > 21){
+		if(scoreCheck(deck) > BLACKJACK){
 			if(deck.cards[i].value == 11){
 				deck.cards[i].value = 1;
 			}
@@ -587,6 +591,7 @@ void aceChange(CardArray & deck){
 
 // Prints advice based on different scenarios from Bycicle website
 void advice(CardArray dealerHand, CardArray playerHand){
+	// Categories for card values
 	int goodHigh = 11;
 	int goodLow = 7;
 	int poorHigh = 6;
@@ -594,8 +599,10 @@ void advice(CardArray dealerHand, CardArray playerHand){
 	int fairHigh = 3;
 	int fairLow = 2;
 
+	int reasonableHigh = 17;
+
 	if(playerHand.currentCards == 2){
-		if(scoreCheck(playerHand) < 17){
+		if(scoreCheck(playerHand) < reasonableHigh){
 			if(dealerHand.cards[0].value >= goodLow && dealerHand.cards[0].value <= goodHigh){
 				cout << "*Hint*: You should keep drawing until your score is above 17, because the dealer has a high chance of ending with a high score!" << endl;
 			}
@@ -609,11 +616,11 @@ void advice(CardArray dealerHand, CardArray playerHand){
 				cout << "*Hint*: You have a Soft Hand! Keep hitting until you reach a score of 18, because your ace will be counted as a 1 if you will bust!" << endl;
 			}
 		}
-		if(scoreCheck(playerHand) >= 17){
+		if(scoreCheck(playerHand) >= reasonableHigh){
 			cout <<"*Hint*: You're close to 21! You should stand, because you have a high chance of bust if you hit." << endl;
 		}
 	}
-	else if(scoreCheck(playerHand) >= 17){
+	else if(scoreCheck(playerHand) >= reasonableHigh){
 		cout <<"*Hint*: You're close to 21! You should stand, because you have a high chance of bust if you hit." << endl;
 	}
 }
