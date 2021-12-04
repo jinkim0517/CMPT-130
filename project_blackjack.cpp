@@ -307,15 +307,18 @@ int blackjack(CardArray & deck){
 		}
 	}
 	else if (scoreCheck(playerHand) > 21){
-		// change all aces to 1
 		cout << "*Dealer*:";
 		printCards(dealerHand);
 		cout << endl;
 		if (scoreCheck(dealerHand) > 21){
-			cout << remarks[3] << endl;
-			result = 0;
-			delete[] dealerHand.cards;
-			delete[] playerHand.cards;
+			// Changes ace values if dealer is bust
+			aceChange(dealerHand);
+			if (scoreCheck(dealerHand) > 21){
+				cout << remarks[3] << endl;
+				result = 0;
+				delete[] dealerHand.cards;
+				delete[] playerHand.cards;
+			}
 		}
 		else{
 			cout << remarks[4] << endl;
@@ -352,10 +355,8 @@ int blackjack(CardArray & deck){
 			printCards(playerHand);
 			cout << endl;
 
-			// If the score is above 21, change all aces from 1 to 11
-			if(scoreCheck(playerHand) > 21){
-				aceChange(playerHand);
-			}
+			// If the score is above 21, change aces from 1 to 11
+			aceChange(playerHand);
 
 			if (scoreCheck(playerHand) > 21){
 				decision = 's';
@@ -390,6 +391,7 @@ int blackjack(CardArray & deck){
 		// Refills deck if cards run out
 		refillDeck(deck);
 
+		// Deals to dealer if player is not bust
 		if(scoreCheck(playerHand) <= 21){
 			while (scoreCheck(dealerHand) < 17){
 				deal(deck, dealerHand);
@@ -409,15 +411,18 @@ int blackjack(CardArray & deck){
 			}
 		}
 		else{
+			// Changes any ace values to try and reduce score to below 21
 			aceChange(dealerHand);
 		}
+
+		aceChange(playerHand);
 
 		// Print scores
 		cout << endl;
 		cout << "Player Score: " << scoreCheck(playerHand) << endl;
 		cout << "Dealer Score: " << scoreCheck(dealerHand) << endl;
 
-		// Print remarks for specific win/lose scenarios
+		// Print remarks for specific win/lose scenarios using array above
 		// Sets result variable to the corresponding outcome (1 = win, 0 = tie, -1 = lose)
 		if(scoreCheck(playerHand) > scoreCheck(dealerHand)){
 			if(scoreCheck(playerHand) < 21){
@@ -484,7 +489,6 @@ int blackjack(CardArray & deck){
 			delete[] playerHand.cards;
 		}
 	}
-	delete[] deck.cards;
 	return result;
 }
 
@@ -543,6 +547,7 @@ void playBlackjack(CardArray & deck){
 	cout << setw(4) << "Wins: " << setw(6) << wins << endl;
 	cout << setw(4) << "Losses: " << setw(4) << losses << endl;
 	cout << setw(4) << "Ties: " << setw(6) << ties << endl;
+	delete[] deck.cards;
 }
 
 // Deals cards to a hand from a deck
@@ -568,16 +573,19 @@ void printCards(CardArray deck){
 	}
 }
 
-// Checks for any aces and changes value of ace card from 11 to 1
+// Checks for any aces and changes value of an ace card from 11 to 1
+// if the score exceeds 21 because of it
 void aceChange(CardArray & deck){
 	for(int i = 0; i < deck.currentCards; i++){
-		if(deck.cards[i].value == 11){
-			deck.cards[i].value = 1;
+		if(scoreCheck(deck) > 21){
+			if(deck.cards[i].value == 11){
+				deck.cards[i].value = 1;
+			}
 		}
 	}
 }
 
-// Prints advice based on different scenarios
+// Prints advice based on different scenarios from Bycicle website
 void advice(CardArray dealerHand, CardArray playerHand){
 	int goodHigh = 11;
 	int goodLow = 7;
@@ -610,6 +618,7 @@ void advice(CardArray dealerHand, CardArray playerHand){
 	}
 }
 
+// Refills a deck by creating a new one and assigning its value to it
 void refillDeck(CardArray & deck){
 	if(deck.currentCards == 0){
 		CardArray newDeck;
