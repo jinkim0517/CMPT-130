@@ -85,17 +85,17 @@ void getNewDeck(CardArray & deck){
 	int rank[] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13};
 	
 	// Variables to keep track of the number of cards in a set
-	int firstSet = 0;
-	int secondSet = 0;
-	int thirdSet = 0;
-	int fourthSet = 0;
+	int spadeSet = 0;
+	int heartSet = 0;
+	int diamondSet = 0;
+	int clubsSet = 0;
 
 	for(int i = 0; i < DECK_SIZE; i++){
 		// Assigns values to the first set
 		if(i < 13){
 			deck.cards[i].suit = suit[0];
-			deck.cards[i].rank = rank[firstSet];
-			firstSet++;
+			deck.cards[i].rank = rank[spadeSet];
+			spadeSet++;
 			if(deck.cards[i].rank == 1){
 				deck.cards[i].description = "AS";
 				deck.cards[i].value = value[10];
@@ -122,8 +122,8 @@ void getNewDeck(CardArray & deck){
 		// Assigns values to the second set
 		else if(i >= 13 && i < 26){
 			deck.cards[i].suit = suit[1];
-			deck.cards[i].rank = rank[secondSet];
-			secondSet++;
+			deck.cards[i].rank = rank[heartSet];
+			heartSet++;
 
 			if(deck.cards[i].rank == 1){
 				deck.cards[i].description = "AH";
@@ -152,8 +152,8 @@ void getNewDeck(CardArray & deck){
 		else if(i >= 26 && i < 39){
 			int n = 0;
 			deck.cards[i].suit = suit[2];
-			deck.cards[i].rank = rank[thirdSet];
-			thirdSet++;
+			deck.cards[i].rank = rank[diamondSet];
+			diamondSet++;
 
 			if(deck.cards[i].rank == 1){
 				deck.cards[i].description = "AD";
@@ -181,8 +181,8 @@ void getNewDeck(CardArray & deck){
 		// Assigns values to the fourth set
 		else if(i >= 39 && i < 52){
 			deck.cards[i].suit = suit[3];
-			deck.cards[i].rank = rank[fourthSet];
-			fourthSet++;
+			deck.cards[i].rank = rank[clubsSet];
+			clubsSet++;
 
 			if(deck.cards[i].rank == 1){
 				deck.cards[i].description = "AC";
