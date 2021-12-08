@@ -604,24 +604,24 @@ void advice(CardArray dealerHand, CardArray playerHand){
 	if(playerHand.currentCards == 2){
 		if(scoreCheck(playerHand) < reasonableHigh){
 			if(dealerHand.cards[0].value >= goodLow && dealerHand.cards[0].value <= goodHigh){
-				cout << "*Hint*: You should keep drawing until your score is above 17, because the dealer has a high chance of ending with a high score!" << endl;
+				cout << "\n*Hint*: You should keep drawing until your score is above 17, because the dealer has a high chance of ending with a high score!\n" << endl;
 			}
 			else if(dealerHand.cards[0].value >= poorLow && dealerHand.cards[0].value <= poorHigh){
-				cout << "*Hint*: You should only draw until your score is 12 or higher, because the dealer will likely draw three cards total, and will most likely bust!" << endl;
+				cout << "\n*Hint*: You should only draw until your score is 12 or higher, because the dealer will likely draw three cards total, and will most likely bust!\n" << endl;
 			}
 			else if(dealerHand.cards[0].value >= fairLow && dealerHand.cards[0].value <= fairHigh){
-				cout << "*Hint*: You should only draw until your score is 13 or higher, because you can gain a high score without a high chance of bust!" << endl;
+				cout << "\n*Hint*: You should only draw until your score is 13 or higher, because you can gain a high score without a high chance of bust!\n" << endl;
 			}
 			else if(playerHand.cards[0].rank == 1 || playerHand.cards[1].rank == 1){
-				cout << "*Hint*: You have a Soft Hand! Keep hitting until you reach a score of 18, because your ace will be counted as a 1 if you will bust!" << endl;
+				cout << "\n*Hint*: You have a Soft Hand! Keep hitting until you reach a score of 18, because your ace will be counted as a 1 if you will bust!\n" << endl;
 			}
 		}
 		if(scoreCheck(playerHand) >= reasonableHigh){
-			cout <<"*Hint*: You're close to 21! You should stand, because you have a high chance of bust if you hit." << endl;
+			cout << "\n*Hint*: You're close to 21! You should stand, because you have a high chance of bust if you hit.\n" << endl;
 		}
 	}
 	else if(scoreCheck(playerHand) >= reasonableHigh){
-		cout <<"*Hint*: You're close to 21! You should stand, because you have a high chance of bust if you hit." << endl;
+		cout << "\n*Hint*: You're close to 21! You should stand, because you have a high chance of bust if you hit.\n" << endl;
 	}
 }
 
