@@ -8,6 +8,7 @@
 #include <ios>
 #include <string>
 #include <ctime>
+#include <stdio.h>
 
 using namespace std;
 const int DECK_SIZE = 52;
